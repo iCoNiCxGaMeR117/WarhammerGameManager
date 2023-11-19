@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarhammerGameManager.Frontend", "WarhammerGameManager.Frontend\WarhammerGameManager.Frontend.csproj", "{E118067B-F17F-44ED-ACA1-7069ABC99F96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarhammerGameManager.Frontend", "WarhammerGameManager.Frontend\WarhammerGameManager.Frontend.csproj", "{C3652D23-7581-4C37-9D4A-A00A50521D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarhammerGameManager.Entities", "WarhammerGameManager.Entities\WarhammerGameManager.Entities.csproj", "{EA770388-F593-4F8E-86D7-401F79485417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarhammerGameManager.Logic", "WarhammerGameManager.Logic\WarhammerGameManager.Logic.csproj", "{25EC6B24-A046-4B49-AD34-546E39D41F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E118067B-F17F-44ED-ACA1-7069ABC99F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E118067B-F17F-44ED-ACA1-7069ABC99F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E118067B-F17F-44ED-ACA1-7069ABC99F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E118067B-F17F-44ED-ACA1-7069ABC99F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3652D23-7581-4C37-9D4A-A00A50521D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3652D23-7581-4C37-9D4A-A00A50521D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3652D23-7581-4C37-9D4A-A00A50521D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3652D23-7581-4C37-9D4A-A00A50521D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA770388-F593-4F8E-86D7-401F79485417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA770388-F593-4F8E-86D7-401F79485417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA770388-F593-4F8E-86D7-401F79485417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA770388-F593-4F8E-86D7-401F79485417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25EC6B24-A046-4B49-AD34-546E39D41F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25EC6B24-A046-4B49-AD34-546E39D41F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25EC6B24-A046-4B49-AD34-546E39D41F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25EC6B24-A046-4B49-AD34-546E39D41F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
