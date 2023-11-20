@@ -4,9 +4,9 @@ namespace WarhammerGameManager.Frontend.Controllers
 {
     public class DiceController : Controller
     {
-        public IActionResult Index()
+        public IActionResult RollDice()
         {
-            return View();
+            return PartialView();
         }
     }
 }

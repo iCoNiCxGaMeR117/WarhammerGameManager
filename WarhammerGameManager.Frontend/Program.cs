@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
+using WarhammerGameManager.Logic.Logical.Classes;
+using WarhammerGameManager.Logic.Logical.Interfaces;
 
 try
 {
@@ -40,6 +42,9 @@ try
     ).CreateBootstrapLogger();
 
     builder.Host.UseSerilog();
+
+    //Add class injections
+    builder.Services.AddScoped<IAdminLogic, AdminLogic>();
 
     var app = builder.Build();
 

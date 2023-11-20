@@ -1,0 +1,27 @@
+﻿@using System.Text.Json
+@using System.Text.Json.Serialization
+@{
+    JsonSerializerOptions SerializerOptions = new()
+    {
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+        WriteIndented = true
+    };
+}
+@model PlayerEditorViewModel
+
+<div class="row justify-content-center">
+    <div class="col-md-6 text-start">
+        @foreach (var player in Model.Players)
+        {
+            <hr />
+            <p>@JsonSerializer.Serialize(player, SerializerOptions)</p>
+        }
+    </div>
+    <div class="col-md-6 text-start">
+        @foreach (var faction in Model.Factions)
+        {
+            <hr />
+            <p>@JsonSerializer.Serialize(faction, SerializerOptions)</p>
+        }
+    </div>
+</div>
