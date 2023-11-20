@@ -38,6 +38,18 @@ public partial class WarhammerNarrative_Context : DbContext
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .IsRequired();
+
+            entity.HasMany(d => d.HitRolls)
+            .WithOne(p => p.Event);
+
+            entity.HasMany(d => d.WoundRolls)
+            .WithOne(p => p.Event);
+
+            entity.HasMany(d => d.SaveRolls)
+            .WithOne(p => p.Event);
+
+            entity.HasMany(d => d.FeelNoPainRolls)
+            .WithOne(p => p.Event);
         });
 
         modelBuilder.Entity<DiceRoll>(entity =>
@@ -60,6 +72,12 @@ public partial class WarhammerNarrative_Context : DbContext
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .IsRequired();
+
+            entity.HasMany(d => d.PlayerFactions)
+            .WithMany(p => p.Factions);
+
+            entity.HasMany(d => d.Games)
+            .WithOne(p => p.PlayerFaction);
         });
 
         modelBuilder.Entity<GameData>(entity =>
@@ -82,6 +100,12 @@ public partial class WarhammerNarrative_Context : DbContext
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .IsRequired();
+
+            entity.HasMany(d => d.GamePlayData)
+            .WithOne(p => p.Game);
+
+            entity.HasMany(d => d.DiceEvents)
+            .WithOne(p => p.GameRoll);
         });
 
         modelBuilder.Entity<Player>(entity =>
@@ -93,6 +117,12 @@ public partial class WarhammerNarrative_Context : DbContext
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .IsRequired();
+
+            entity.HasMany(d => d.Factions)
+            .WithMany(p => p.PlayerFactions);
+
+            entity.HasMany(d => d.Games)
+            .WithOne(p => p.PlayerData);
         });
 
         OnModelCreatingPartial(modelBuilder);
