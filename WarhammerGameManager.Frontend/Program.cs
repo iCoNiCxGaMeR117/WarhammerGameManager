@@ -70,5 +70,6 @@ catch (Exception ex)
 }
 finally
 {
+    Log.Information("Closing Application and flushing logs.");
     Log.CloseAndFlush();
 }

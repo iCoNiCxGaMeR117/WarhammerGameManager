@@ -23,6 +23,7 @@ public partial class WarhammerNarrative_Context : DbContext
     public virtual DbSet<GameData> GameDatas { get; set; }
     public virtual DbSet<GameResult> GameResults { get; set; }
     public virtual DbSet<Player> Players { get; set; }
+    public virtual DbSet<RollType> RollTypes { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:WHNCon");
@@ -39,16 +40,7 @@ public partial class WarhammerNarrative_Context : DbContext
             .ValueGeneratedOnAdd()
             .IsRequired();
 
-            entity.HasMany(d => d.HitRolls)
-            .WithOne(p => p.Event);
-
-            entity.HasMany(d => d.WoundRolls)
-            .WithOne(p => p.Event);
-
-            entity.HasMany(d => d.SaveRolls)
-            .WithOne(p => p.Event);
-
-            entity.HasMany(d => d.FeelNoPainRolls)
+            entity.HasMany(d => d.Rolls)
             .WithOne(p => p.Event);
         });
 
@@ -123,6 +115,14 @@ public partial class WarhammerNarrative_Context : DbContext
 
             entity.HasMany(d => d.Games)
             .WithOne(p => p.PlayerData);
+        });
+
+        modelBuilder.Entity<RollType>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasMany(d => d.DiceRolls)
+            .WithOne(p => p.RollType);
         });
 
         OnModelCreatingPartial(modelBuilder);
