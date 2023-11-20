@@ -18,7 +18,6 @@ namespace WarhammerGameManager.Frontend.Controllers
         {
             try
             {
-                throw new ArgumentException("Sample");
                 return View();
             }
             catch (Exception ex)
