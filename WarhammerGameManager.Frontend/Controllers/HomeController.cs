@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System.Diagnostics;
 using WarhammerGameManager.Frontend.Models;
 
@@ -15,7 +16,16 @@ namespace WarhammerGameManager.Frontend.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                throw new ArgumentException("Sample");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error Occurred!");
+                throw;
+            }
         }
 
         public IActionResult Privacy()

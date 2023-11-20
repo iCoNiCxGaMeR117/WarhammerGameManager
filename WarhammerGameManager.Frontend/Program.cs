@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,29 @@ builder.Services.AddControllersWithViews();
 //});
 builder.Services.AddRazorPages();
 
+builder.Services.AddDbContext<WarhammerNarrative_Context>(o => o.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Debug()
+    .WriteTo.MSSqlServer(
+    connectionString: builder.Configuration["ConnectionStrings:WHNCon"],
+    sinkOptions: new MSSqlServerSinkOptions{
+        TableName = "LogEvents",
+        SchemaName = "dbo",
+        AutoCreateSqlTable = true
+    },
+    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+    formatProvider: null,
+    columnOptions: null,
+    logEventFormatter: null
+).CreateBootstrapLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -31,5 +56,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+Log.Information("Application starting!");
 
 app.Run();
