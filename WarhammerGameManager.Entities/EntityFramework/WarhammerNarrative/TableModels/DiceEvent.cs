@@ -18,6 +18,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public long Id { get; set; }
 
+        public GameResult GameRoll { get; set; }
+
         public virtual ICollection<DiceRoll> HitRolls { get; set; }
 
         public virtual ICollection<DiceRoll> WoundRolls { get; set; }

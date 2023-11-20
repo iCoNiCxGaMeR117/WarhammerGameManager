@@ -12,6 +12,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public int RollResult { get; set; }
 
+        public bool PassResult { get; set; }
+
         public DiceEvent Event { get; set; }
     }
 }

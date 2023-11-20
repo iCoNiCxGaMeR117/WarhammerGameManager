@@ -11,12 +11,13 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
         public GameResult()
         {
             GamePlayData = new HashSet<GameData>();
+            DiceEvents = new HashSet<DiceEvent>();
         }
 
         public long Id { get; set; }
 
         public virtual ICollection<GameData> GamePlayData { get; set; }
 
-        public Player Winner { get; set; }
+        public virtual ICollection<DiceEvent> DiceEvents { get; set; }
     }
 }

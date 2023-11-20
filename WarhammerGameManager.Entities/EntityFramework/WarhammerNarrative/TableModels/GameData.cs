@@ -14,6 +14,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public Faction PlayerFaction { get; set; }
 
+        public GameResult Game { get; set; }
+
         public int Points { get; set; }
     }
 }

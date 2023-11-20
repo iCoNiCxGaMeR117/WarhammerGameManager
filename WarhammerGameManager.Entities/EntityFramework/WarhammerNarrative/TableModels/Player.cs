@@ -11,7 +11,7 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
         public Player()
         {
             Factions = new HashSet<Faction>();
-            Games = new HashSet<GameResult>();
+            Games = new HashSet<GameData>();
         }
 
         public long Id { get; set; }
@@ -22,6 +22,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public virtual ICollection<Faction> Factions { get; set; }
 
-        public virtual ICollection<GameResult> Games { get; set; }
+        public virtual ICollection<GameData> Games { get; set; }
     }
 }
