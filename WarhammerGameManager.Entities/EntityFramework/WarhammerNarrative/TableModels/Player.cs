@@ -20,8 +20,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public string LastName { get; set; }
 
-        public ICollection<Faction> Factions { get; set; }
+        public virtual ICollection<Faction> Factions { get; set; }
 
-        public ICollection<GameResult> Games { get; set; }
+        public virtual ICollection<GameResult> Games { get; set; }
     }
 }

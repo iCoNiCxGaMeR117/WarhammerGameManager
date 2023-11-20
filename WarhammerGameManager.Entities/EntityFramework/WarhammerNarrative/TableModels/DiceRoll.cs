@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels
 {
-    public class GameResult
+    public class DiceRoll
     {
-        public GameResult()
-        {
-            GamePlayData = new HashSet<GameData>();
-        }
-
         public long Id { get; set; }
 
-        public virtual ICollection<GameData> GamePlayData { get; set; }
+        public int RollResult { get; set; }
 
-        public Player Winner { get; set; }
+        public DiceEvent Event { get; set; }
     }
 }
