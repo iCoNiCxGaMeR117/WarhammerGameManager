@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels
 {
-    internal class Log
+    public class GameData
     {
+        public long Id { get; set; }
+
+        public Player PlayerData { get; set; }
+
+        public Faction PlayerFaction { get; set; }
+
+        public int Points { get; set; }
     }
 }

@@ -17,6 +17,12 @@ public partial class WarhammerNarrative_Context : DbContext
     {
     }
 
+    public virtual DbSet<Player> Players { get; set; }
+
+    public virtual DbSet<GameResult> GameResults { get; set; }
+
+    public virtual DbSet<Faction> Factions { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:WHNCon");
 
