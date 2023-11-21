@@ -1,4 +1,10 @@
 ﻿$(function () {
+    $('.basicDataTable').each(function () {
+        $(this).DataTable({
+            
+        });
+    });
+
     $('#LoadingIconSection').fadeOut('fast', function () {
         $('#MainContent').fadeIn('fast');
     });

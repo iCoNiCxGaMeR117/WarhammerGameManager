@@ -1,27 +1,51 @@
-﻿@using System.Text.Json
-@using System.Text.Json.Serialization
-@{
-    JsonSerializerOptions SerializerOptions = new()
-    {
-        ReferenceHandler = ReferenceHandler.IgnoreCycles,
-        WriteIndented = true
-    };
-}
-@model PlayerEditorViewModel
+﻿@model PlayerEditorViewModel
 
 <div class="row justify-content-center">
-    <div class="col-md-6 text-start">
-        @foreach (var player in Model.Players)
-        {
-            <hr />
-            <p>@JsonSerializer.Serialize(player, SerializerOptions)</p>
-        }
-    </div>
-    <div class="col-md-6 text-start">
-        @foreach (var faction in Model.Factions)
-        {
-            <hr />
-            <p>@JsonSerializer.Serialize(faction, SerializerOptions)</p>
-        }
+    <div class="col-md-6 text-center">
+        <h1>Players</h1>
     </div>
 </div>
+
+<div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+        <hr />
+        <div class="table-responsive">
+            <table id="PlayerDescTable" class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            First Name
+                        </th>
+                        <th class="text-center">
+                            Last Name
+                        </th>
+                        <th class="text-center">
+                            Factions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in Model.Players)
+                    {
+                        <tr>
+                            <td>
+                                @player.FirstName
+                            </td>
+                            <td>
+                                @player.LastName
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary">Factions</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/PlayerEditorScripts.js" asp-append-version="true"></script>
+}
