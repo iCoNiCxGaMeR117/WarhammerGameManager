@@ -16,6 +16,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public long Id { get; set; }
 
+        public DateTime GameDate { get; set; }
+
         public virtual ICollection<GameData> GamePlayData { get; set; }
 
         public virtual ICollection<DiceEvent> DiceEvents { get; set; }
