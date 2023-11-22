@@ -22,6 +22,7 @@ public partial class WarhammerNarrative_Context : DbContext
     public virtual DbSet<Faction> Factions { get; set; }
     public virtual DbSet<GameData> GameDatas { get; set; }
     public virtual DbSet<GameResult> GameResults { get; set; }
+    public virtual DbSet<ParentFaction> ParentFactions { get; set; }
     public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<RollType> RollTypes { get; set; }
     
@@ -65,8 +66,8 @@ public partial class WarhammerNarrative_Context : DbContext
             .ValueGeneratedOnAdd()
             .IsRequired();
 
-            entity.HasMany(d => d.PlayerFactions)
-            .WithMany(p => p.Factions);
+            entity.HasMany(d => d.SubFactions)
+            .WithOne(p => p.Faction);
 
             entity.HasMany(d => d.Games)
             .WithOne(p => p.PlayerFaction);
@@ -100,6 +101,20 @@ public partial class WarhammerNarrative_Context : DbContext
             .WithOne(p => p.GameRoll);
         });
 
+        modelBuilder.Entity<ParentFaction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable($"{nameof(ParentFaction)}");
+
+            entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+            entity.HasMany(d => d.ChildFactions)
+            .WithOne(p => p.Parent);
+        });
+
         modelBuilder.Entity<Player>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -110,7 +125,7 @@ public partial class WarhammerNarrative_Context : DbContext
             .ValueGeneratedOnAdd()
             .IsRequired();
 
-            entity.HasMany(d => d.Factions)
+            entity.HasMany(d => d.SubFactions)
             .WithMany(p => p.PlayerFactions);
 
             entity.HasMany(d => d.Games)
@@ -121,8 +136,24 @@ public partial class WarhammerNarrative_Context : DbContext
         {
             entity.HasKey(e => e.Id);
 
+            entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
             entity.HasMany(d => d.DiceRolls)
             .WithOne(p => p.RollType);
+        });
+
+        modelBuilder.Entity<SubFaction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+            entity.HasMany(d => d.PlayerFactions)
+            .WithMany(p => p.SubFactions);
         });
 
         OnModelCreatingPartial(modelBuilder);

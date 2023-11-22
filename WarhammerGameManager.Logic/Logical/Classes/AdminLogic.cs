@@ -45,7 +45,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             {
                 _logger.LogInformation("Getting player data...");
 
-                var players = await _context.Players.Include(f => f.Factions).ToListAsync();
+                var players = await _context.Players.Include(f => f.SubFactions).ToListAsync();
 
                 if (players == null)
                 {

@@ -10,7 +10,7 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
     {
         public Player()
         {
-            Factions = new HashSet<Faction>();
+            SubFactions = new HashSet<SubFaction>();
             Games = new HashSet<GameData>();
         }
 
@@ -20,7 +20,7 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public string LastName { get; set; }
 
-        public virtual ICollection<Faction> Factions { get; set; }
+        public virtual ICollection<SubFaction> SubFactions { get; set; }
 
         public virtual ICollection<GameData> Games { get; set; }
     }
