@@ -22,8 +22,6 @@ try
     //});
     builder.Services.AddRazorPages();
 
-    builder.Services.AddDbContext<WarhammerNarrative_Context>(o => o.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
-
     Log.Logger = new LoggerConfiguration()
         .WriteTo.Console()
         .WriteTo.Debug()
@@ -44,7 +42,10 @@ try
     builder.Host.UseSerilog();
 
     //Add class injections
+    builder.Services.AddDbContext<WarhammerNarrative_Context>(o => o.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
     builder.Services.AddScoped<IAdminLogic, AdminLogic>();
+    builder.Services.AddScoped<IGameManagerLogic, GameManagerLogic>();
+    builder.Services.AddSingleton<Random>();
 
     var app = builder.Build();
 

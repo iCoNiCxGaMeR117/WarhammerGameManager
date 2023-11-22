@@ -5,11 +5,11 @@ namespace WarhammerGameManager.Frontend.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAdminLogic _adminLogic;
+        private readonly IAdminLogic _al;
 
         public AdminController(IAdminLogic adminLogic)
         {
-            _adminLogic = adminLogic;
+            _al = adminLogic;
         }
 
         public IActionResult Index()
@@ -19,7 +19,7 @@ namespace WarhammerGameManager.Frontend.Controllers
 
         public async Task<IActionResult> PlayerEditor()
         {
-            return View(await _adminLogic.GetPlayerEditorViewModel());
+            return View(await _al.GetPlayerEditorViewModel());
         }
     }
 }
