@@ -10,5 +10,17 @@ namespace WarhammerGameManager.Logic.Logical.Classes
         {
             _rand = rand;
         }
+
+        private int[] RollDice(int diceCount)
+        {
+            var diceResults = new int[diceCount];
+
+            for(var i = 0; i < diceCount; i++)
+            {
+                diceResults[i] = _rand.Next(1, 7);
+            }
+
+            return diceResults;
+        }
     }
 }
