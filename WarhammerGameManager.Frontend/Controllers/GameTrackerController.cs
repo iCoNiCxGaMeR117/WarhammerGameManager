@@ -22,7 +22,7 @@ namespace WarhammerGameManager.Frontend.Controllers
         [HttpPost]
         public IActionResult RollDice(RollDiceRequest request, long? GameId = null)
         {
-            var data = new DiceEvent();
+            DiceEvent data;
 
             //If there is no provided GameId, then this is a quick roll
             if (GameId == null)
@@ -34,7 +34,13 @@ namespace WarhammerGameManager.Frontend.Controllers
                 data = _gml.GameRoll(request, GameId.Value);
             }
 
-            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", data);
+            var response = new RollDiceResponse()
+            {
+                Request = request,
+                Results = data
+            };
+
+            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", response);
         }
     }
 }

@@ -1,5 +1,13 @@
-﻿<div class="row justify-content-center">
-    <div class="col-md-12 text-center">
-        Result
+﻿@model RollDiceResponse
+
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <h3>Results</h3>
+        <hr />
+        <button class="btn btn-outline-primary">Hit Rolls</button>
+        <br />
+        <b>Pass Val: @(Model.Request.HitThreshold)+</b>
+        <br />
+        Hits: @Model.Results.Rolls.Count(x => x.RollType.Name.ToUpper().Equals("HIT") && x.PassResult)
     </div>
 </div>

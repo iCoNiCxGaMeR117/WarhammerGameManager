@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
 using WarhammerGameManager.Entities.ViewModels;
 
 namespace WarhammerGameManager.Logic
@@ -34,6 +36,23 @@ namespace WarhammerGameManager.Logic
                     })
                 .Where(x => x.Value > 0)
                 .ToArray());
+        }
+
+        public static List<DiceRoll> ConvertToDiceRoll(this int[] rolls, RollType rollType, int threshold)
+        {
+            var diceRolls = new List<DiceRoll>();
+
+            foreach (var roll in rolls) 
+            {
+                diceRolls.Add(new DiceRoll
+                {
+                    RollResult = roll,
+                    RollType = rollType,
+                    PassResult = (roll >= threshold)
+                });
+            }
+
+            return diceRolls;
         }
     }
 }
