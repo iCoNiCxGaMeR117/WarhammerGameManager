@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Diagnostics;
 using WarhammerGameManager.Frontend.Models;
+using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Frontend.Controllers
 {
@@ -25,11 +26,6 @@ namespace WarhammerGameManager.Frontend.Controllers
                 _logger.LogError(ex, "Error Occurred!");
                 throw;
             }
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

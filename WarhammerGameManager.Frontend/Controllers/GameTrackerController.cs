@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarhammerGameManager.Entities.ApplicationModels;
+using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
 using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Frontend.Controllers
@@ -15,6 +17,24 @@ namespace WarhammerGameManager.Frontend.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult RollDice(RollDiceRequest request, long? GameId = null)
+        {
+            var data = new DiceEvent();
+
+            //If there is no provided GameId, then this is a quick roll
+            if (GameId == null)
+            {
+                data = _gml.QuickRollDice(request);
+            }
+            else
+            {
+                data = _gml.GameRoll(request, GameId.Value);
+            }
+
+            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", data);
         }
     }
 }
