@@ -23,22 +23,26 @@ namespace WarhammerGameManager.Logic.Logical.Classes
 
             var rollTypes = _context.RollTypes.ToList();
 
-            int[] hitRoll = RollDice(request.DiceCount);
-            rolls.AddRange(hitRoll.ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("HIT")), request.HitThreshold));
-            var hitCount = hitRoll.Count(x => x >= request.HitThreshold);
+            var hitRoll = RollDice(request.DiceCount)
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("HIT")), request.HitThreshold);
+            rolls.AddRange(hitRoll);
+            var hitCount = hitRoll.Count(x => x.PassResult);
 
-            int[] woundRoll = RollDice(hitCount);
-            rolls.AddRange(woundRoll.ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("WOUND")), request.WoundThreshold));
-            var woundCount = woundRoll.Count(x => x >= request.WoundThreshold);
+            var woundRoll = RollDice(hitCount)
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("WOUND")), request.WoundThreshold);
+            rolls.AddRange(woundRoll);
+            var woundCount = woundRoll.Count(x => x.PassResult);
 
-            int[] saveRoll = RollDice(woundCount);
-            rolls.AddRange(saveRoll.ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("SAVE")), request.SaveThreshold));
-            var saveCount = saveRoll.Count(x => x >= request.SaveThreshold);
+            var saveRoll = RollDice(woundCount)
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("SAVE")), request.SaveThreshold);
+            rolls.AddRange(saveRoll);
+            var saveCount = saveRoll.Count(x => x.PassResult);
 
             if (request.FeelNoPainFlag)
             {
-                int[] fnpRoll = RollDice(woundCount - saveCount);
-                rolls.AddRange(fnpRoll.ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("FEEL NO PAIN")), request.FeelNoPainThreshold ?? 6));
+                var fnpRoll = RollDice(woundCount - saveCount)
+                    .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("FEEL NO PAIN")), request.FeelNoPainThreshold ?? 6);
+                rolls.AddRange(fnpRoll);
             }
 
             diceEvent.Rolls = rolls;

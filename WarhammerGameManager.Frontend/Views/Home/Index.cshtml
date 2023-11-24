@@ -19,7 +19,7 @@
 </div>
 
 <div class="modal fade" id="RollDiceModal" tabindex="-1" aria-labelledby="RollDiceModal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="RollDiceModalLabel">Quick Roll Dice</h5>
@@ -29,22 +29,22 @@
                 <div id="RollDiceRequestDiv">
                     <div class="mb-3">
                         <label for="AttackCountInput" class="form-label">Attacks Count</label>
-                        <input form="RollDiceRequestForm" name="request.DiceCount" type="number" step="1" class="form-control" id="AttackCountInput" aria-describedby="AttackCountHelp">
+                        <input form="RollDiceRequestForm" name="request.DiceCount" type="number" step="1" min="1" class="form-control" id="AttackCountInput" aria-describedby="AttackCountHelp">
                         <div id="AttackCountHelp" class="form-text">The number of dice to roll initially, usually the A (attacks) characteristic.</div>
                     </div>
                     <div class="mb-3">
                         <label for="HitThresholdInput" class="form-label">Hit Threshold</label>
-                        <input form="RollDiceRequestForm" name="request.HitThreshold" type="number" step="1" class="form-control" id="HitThresholdInput" aria-describedby="HitThresholdHelp">+
+                        <input form="RollDiceRequestForm" name="request.HitThreshold" type="number" step="1" min="1" max="6" class="form-control" id="HitThresholdInput" aria-describedby="HitThresholdHelp">
                         <div id="HitThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Hit.</div>
                     </div>
                     <div class="mb-3">
                         <label for="WoundThresholdInput" class="form-label">Wound Threshold</label>
-                        <input form="RollDiceRequestForm" name="request.SaveThreshold" type="number" step="1" class="form-control" id="WoundThresholdInput" aria-describedby="WoundThresholdHelp">+
+                        <input form="RollDiceRequestForm" name="request.WoundThreshold" type="number" step="1" min="1" max="6" class="form-control" id="WoundThresholdInput" aria-describedby="WoundThresholdHelp">
                         <div id="WoundThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Wound.</div>
                     </div>
                     <div class="mb-3">
                         <label for="SaveThresholdInput" class="form-label">Save Threshold</label>
-                        <input form="RollDiceRequestForm" name="request.WoundThreshold" type="number" step="1" class="form-control" id="SaveThresholdInput" aria-describedby="SaveThresholdHelp">+
+                        <input form="RollDiceRequestForm" name="request.SaveThreshold" type="number" step="1" min="1" max="6" class="form-control" id="SaveThresholdInput" aria-describedby="SaveThresholdHelp">
                         <div id="SaveThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Save.</div>
                     </div>
                     <div class="mb-3 form-check">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="FNPThresholdInput" class="form-label">Feel No Pain Threshold</label>
-                        <input form="RollDiceRequestForm" name="request.FeelNoPainThreshold" type="number" step="1" class="form-control" id="FNPThresholdInput" aria-describedby="FNPThresholdHelp">+
+                        <input form="RollDiceRequestForm" name="request.FeelNoPainThreshold" type="number" step="1" min="1" max="6" class="form-control" id="FNPThresholdInput" aria-describedby="FNPThresholdHelp">
                         <div id="FNPThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Feel No Pain Save.</div>
                     </div>
                     <button form="RollDiceRequestForm" type="submit" class="btn btn-primary">Roll!</button>

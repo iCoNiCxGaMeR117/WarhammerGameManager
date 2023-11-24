@@ -1,4 +1,7 @@
 ﻿$(function () {
+    //Set the results div to the loading icon
+    $('#RollDiceResultsDiv').html($('#LoadingIconSection').html());
+
     //Sample
     //$.get().done(function (data) {
     //    $.fn.GeneratePieChart('Title', data, 'chartDivId').done(function () {
@@ -7,6 +10,30 @@
     //        });
     //    });
     //});
+});
+
+$('#RollDiceRequestForm').on('submit', function (event) {
+    event.preventDefault();
+
+    let formData = $('#RollDiceRequestForm').serialize();
+    let formAction = $('#RollDiceRequestForm').attr('action');
+
+    $('#RollDiceRequestDiv').fadeOut('fast', function () {
+        $('#RollDiceResultsDiv').fadeIn('fast');
+        $.post(formAction, formData).done(function (returnData) {
+            $('#RollDiceResultsDiv').fadeOut('fast', function () {
+                $('#RollDiceResultsDiv').html(returnData);
+                $('#RollDiceResultsDiv').fadeIn('fast');
+            });
+        });
+    });
+});
+
+$('#RollDiceModal').on('hidden.bs.modal', function () {
+    $('#RollDiceResultsDiv').html($('#LoadingIconSection').html());
+    $('#RollDiceResultsDiv').hide();
+    $('#RollDiceRequestDiv').show();
+    $('#RollDiceRequestForm')[0].reset();
 });
 
 $.fn.BuildDatasets = function (labels, dataSet) {
