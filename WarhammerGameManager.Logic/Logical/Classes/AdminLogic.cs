@@ -77,7 +77,9 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                     newPlayer.FirstName = request.FirstName;
                     newPlayer.LastName = request.LastName;
 
-                    newPlayer.SubFactions = await _context.SubFactions.Where(x => request.Sub_Factions.Where(y => y.Selected).Select(y => y.Id).Contains(x.Id)).ToListAsync();
+                    var selectedSubFactions = request.Sub_Factions.Where(y => y.Selected).Select(y => y.Id);
+
+                    newPlayer.SubFactions = await _context.SubFactions.Where(x => selectedSubFactions.Contains(x.Id)).ToListAsync();
                 }
 
                 await _context.SaveChangesAsync();
