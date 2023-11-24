@@ -27,11 +27,8 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             {
                 var viewModel = new PlayerEditorViewModel();
 
-                var players = await GetAllPlayers();
-                var factions = await GetAllFactions();
-
-                viewModel.Players = players;
-                viewModel.Sub_Factions = factions;
+                viewModel.Players = await GetAllPlayers();
+                viewModel.Sub_Factions = await GetAllSubFactions();
 
                 return viewModel;
             }
@@ -118,11 +115,11 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             }
         }
 
-        public async Task<IList<SubFaction>> GetAllFactions()
+        public async Task<IList<SubFaction>> GetAllSubFactions()
         {
             try
             {
-                _logger.LogInformation("Getting faction data...");
+                _logger.LogInformation("Getting sub-faction data...");
 
                 var factions = await _context.SubFactions
                     .Include(f => f.Faction)
@@ -134,6 +131,33 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                     factions = new List<SubFaction>();
                 }
 
+                _logger.LogInformation("Got sub-faction data! {FactionsCount} sub-factions retrieved!", factions.Count);
+
+                return factions;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue Occured Getting Sub-Factions!");
+                return new List<SubFaction>();
+            }
+        }
+
+        public async Task<IList<Faction>> GetAllFactions()
+        {
+            try
+            {
+                _logger.LogInformation("Getting faction data...");
+
+                var factions = await _context.Factions
+                    .Include(x => x.Parent)
+                    .Include(y => y.SubFactions)
+                    .ToListAsync();
+
+                if (factions == null)
+                {
+                    factions = new List<Faction>();
+                }
+
                 _logger.LogInformation("Got faction data! {FactionsCount} factions retrieved!", factions.Count);
 
                 return factions;
@@ -141,7 +165,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Issue Occured Getting Factions!");
-                return new List<SubFaction>();
+                return new List<Faction>();
             }
         }
     }

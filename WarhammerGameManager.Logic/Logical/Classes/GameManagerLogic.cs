@@ -1,6 +1,9 @@
-﻿using WarhammerGameManager.Entities.ApplicationModels;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using WarhammerGameManager.Entities.ApplicationModels;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
+using WarhammerGameManager.Entities.ViewModels;
 using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Logic.Logical.Classes
@@ -9,11 +12,15 @@ namespace WarhammerGameManager.Logic.Logical.Classes
     {
         private readonly Random _rand;
         private readonly WarhammerNarrative_Context _context;
+        private readonly ILogger<GameManagerLogic> _logger;
+        private readonly IAdminLogic _al;
 
-        public GameManagerLogic(Random rand, WarhammerNarrative_Context context)
+        public GameManagerLogic(Random rand, WarhammerNarrative_Context context, ILogger<GameManagerLogic> logger, IAdminLogic al)
         {
             _rand = rand;
             _context = context;
+            _logger = logger;
+            _al = al;
         }
 
         public async Task<DiceEvent> QuickRollDice(RollDiceRequest request)
@@ -48,6 +55,33 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             diceEvent.Rolls = rolls;
 
             return diceEvent;
+        }
+
+        public async Task<GameManagerViewerViewModel> GenerateGameManagerView()
+        {
+            try
+            {
+                var games = await _context.GameResults
+                    .Include(gd => gd.GamePlayData)
+                    .ThenInclude(p => p.PlayerData)
+                    .Include(gd => gd.GamePlayData)
+                    .ThenInclude(pf => pf.PlayerFaction)
+                    .OrderByDescending(x => x.GameDate)
+                    .ThenByDescending(x => x.Id)
+                    .ToListAsync();
+
+                return new GameManagerViewerViewModel
+                {
+                    Games = games,
+                    Players = await _al.GetAllPlayers(),
+                    Factions = await _al.GetAllFactions()
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Couldn't generate GameManagerViewerViewModel!");
+                return new();
+            }
         }
 
         public async Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId)

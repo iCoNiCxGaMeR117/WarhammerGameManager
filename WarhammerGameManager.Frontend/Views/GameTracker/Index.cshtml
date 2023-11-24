@@ -1,8 +1,36 @@
-﻿<div class="row justify-content-center">
+﻿@model GameManagerViewerViewModel
+
+<div class="row justify-content-center">
     <div class="col-md-6 text-center">
         <h1>Game Tracker</h1>
         <hr />
     </div>
 </div>
 
-<p>Here will be the future Game Tracker, tracking game and dice rolls!</p>
+<div class="accordion" id="gamesAccordian">
+    @for (var i = 0; i < Model.Games.Count; i++)
+    {
+        var game = Model.Games[i];
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="cardHeading_@i">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#game_@i" aria-expanded="false" aria-controls="game_@i">
+                    Game #@game.Id - @game.GameDate.ToString("MM/dd/yyyy")
+                </button>
+            </h2>
+            <div id="game_@i" class="accordion-collapse collapse show" aria-labelledby="cardHeading_@i" data-bs-parent="#gamesAccordian">
+                <div class="accordion-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            @foreach (var gameData in game.GamePlayData.OrderByDescending(p => p.Points))
+                            {
+                                <h3>@gameData.PlayerData.FirstName @gameData.PlayerData.LastName</h3>
+                                <h4>Points: @gameData.Points</h4>
+                                <hr />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -14,9 +14,9 @@ namespace WarhammerGameManager.Frontend.Controllers
             _gml = gml;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _gml.GenerateGameManagerView());
         }
 
         [HttpPost]

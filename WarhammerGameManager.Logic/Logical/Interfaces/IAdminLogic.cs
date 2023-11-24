@@ -11,8 +11,9 @@ namespace WarhammerGameManager.Logic.Logical.Interfaces
 {
     public interface IAdminLogic
     {
-        Task<IList<SubFaction>> GetAllFactions();
+        Task<IList<Faction>> GetAllFactions();
         Task<IList<Player>> GetAllPlayers();
+        Task<IList<SubFaction>> GetAllSubFactions();
         Task<PlayerEditorViewModel> GetPlayerEditorViewModel();
         Task PlayerInfoUpdater(PlayerDataRequest request);
     }
