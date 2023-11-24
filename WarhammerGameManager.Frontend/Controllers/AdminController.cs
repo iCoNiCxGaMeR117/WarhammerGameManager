@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarhammerGameManager.Entities.ApplicationModels;
 using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Frontend.Controllers
@@ -20,6 +21,12 @@ namespace WarhammerGameManager.Frontend.Controllers
         public async Task<IActionResult> PlayerEditor()
         {
             return View(await _al.GetPlayerEditorViewModel());
+        }
+
+        public async Task<IActionResult> PlayerInfoEditor(PlayerDataRequest request)
+        {
+            await _al.PlayerInfoUpdater(request);
+            return RedirectToAction("PlayerEditor");
         }
     }
 }

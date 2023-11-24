@@ -25,6 +25,7 @@ public partial class WarhammerNarrative_Context : DbContext
     public virtual DbSet<ParentFaction> ParentFactions { get; set; }
     public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<RollType> RollTypes { get; set; }
+    public virtual DbSet<SubFaction> SubFactions { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:WHNCon");
@@ -136,6 +137,8 @@ public partial class WarhammerNarrative_Context : DbContext
         {
             entity.HasKey(e => e.Id);
 
+            entity.ToTable($"{nameof(RollType)}");
+
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .IsRequired();
@@ -147,6 +150,8 @@ public partial class WarhammerNarrative_Context : DbContext
         modelBuilder.Entity<SubFaction>(entity =>
         {
             entity.HasKey(e => e.Id);
+
+            entity.ToTable($"{nameof(SubFaction)}");
 
             entity.Property(e => e.Id)
             .ValueGeneratedOnAdd()

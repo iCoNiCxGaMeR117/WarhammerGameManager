@@ -7,11 +7,11 @@ namespace WarhammerGameManager.Entities.ViewModels
         public PlayerEditorViewModel()
         {
             Players = new List<Player>();
-            Factions = new List<Faction>();
+            Sub_Factions = new List<SubFaction>();
         }
 
         public IList<Player> Players { get; set; }
 
-        public IList<Faction> Factions { get; set; } 
+        public IList<SubFaction> Sub_Factions { get; set; } 
     }
 }

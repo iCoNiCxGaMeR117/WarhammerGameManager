@@ -16,31 +16,31 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             _context = context;
         }
 
-        public DiceEvent QuickRollDice(RollDiceRequest request)
+        public async Task<DiceEvent> QuickRollDice(RollDiceRequest request)
         {
             var diceEvent = new DiceEvent();
             var rolls = new List<DiceRoll>();
 
             var rollTypes = _context.RollTypes.ToList();
 
-            var hitRoll = RollDice(request.DiceCount)
+            var hitRoll = (await RollDice(request.DiceCount))
                 .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("HIT")), request.HitThreshold);
             rolls.AddRange(hitRoll);
             var hitCount = hitRoll.Count(x => x.PassResult);
 
-            var woundRoll = RollDice(hitCount)
+            var woundRoll = (await RollDice(hitCount))
                 .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("WOUND")), request.WoundThreshold);
             rolls.AddRange(woundRoll);
             var woundCount = woundRoll.Count(x => x.PassResult);
 
-            var saveRoll = RollDice(woundCount)
+            var saveRoll = (await RollDice(woundCount))
                 .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("SAVE")), request.SaveThreshold);
             rolls.AddRange(saveRoll);
             var saveCount = saveRoll.Count(x => x.PassResult);
 
             if (request.FeelNoPainFlag)
             {
-                var fnpRoll = RollDice(woundCount - saveCount)
+                var fnpRoll = (await RollDice(woundCount - saveCount))
                     .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("FEEL NO PAIN")), request.FeelNoPainThreshold ?? 6);
                 rolls.AddRange(fnpRoll);
             }
@@ -50,21 +50,23 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             return diceEvent;
         }
 
-        public DiceEvent GameRoll(RollDiceRequest request, long GameId)
+        public async Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId)
         {
             throw new NotImplementedException();
         }
 
-        private int[] RollDice(int diceCount)
+        private async Task<int[]> RollDice(int diceCount)
         {
-            var diceResults = new int[diceCount];
+            return await Task.Run(() => {
+                var diceResults = new int[diceCount];
 
-            for(var i = 0; i < diceCount; i++)
-            {
-                diceResults[i] = _rand.Next(1, 7);
-            }
+                for (var i = 0; i < diceCount; i++)
+                {
+                    diceResults[i] = _rand.Next(1, 7);
+                }
 
-            return diceResults;
+                return diceResults;
+            });
         }
     }
 }

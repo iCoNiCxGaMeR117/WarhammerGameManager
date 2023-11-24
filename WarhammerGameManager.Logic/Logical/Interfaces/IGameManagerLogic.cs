@@ -5,7 +5,7 @@ namespace WarhammerGameManager.Logic.Logical.Interfaces
 {
     public interface IGameManagerLogic
     {
-        DiceEvent GameRoll(RollDiceRequest request, long GameId);
-        DiceEvent QuickRollDice(RollDiceRequest request);
+        Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId);
+        Task<DiceEvent> QuickRollDice(RollDiceRequest request);
     }
 }

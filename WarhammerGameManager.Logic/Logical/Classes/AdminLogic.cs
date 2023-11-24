@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+using WarhammerGameManager.Entities.ApplicationModels;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
 using WarhammerGameManager.Entities.ViewModels;
@@ -28,7 +31,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                 var factions = await GetAllFactions();
 
                 viewModel.Players = players;
-                viewModel.Factions = factions;
+                viewModel.Sub_Factions = factions;
 
                 return viewModel;
             }
@@ -39,13 +42,63 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             }
         }
 
+        public async Task PlayerInfoUpdater(PlayerDataRequest request)
+        {
+            try
+            {
+                if (request.ExistingPlayerId != null)
+                {
+                    var curPlayer = await _context.Players.Include(x => x.SubFactions).SingleAsync(x => x.Id.Equals(request.ExistingPlayerId));
+                    var curFactions = curPlayer.SubFactions.Select(x => x.Id);
+
+                    if (curPlayer != null)
+                    {
+                        curPlayer.FirstName = request.FirstName;
+                        curPlayer.LastName = request.LastName;
+                        
+                        foreach (var subFaction in request.Sub_Factions)
+                        {
+                            if (subFaction.Selected && (!curFactions?.Contains(subFaction.Id) ?? false))
+                            {
+                                curPlayer.SubFactions.Add(await _context.SubFactions.SingleAsync(y => y.Id == subFaction.Id));
+                            }
+                            else if (!subFaction.Selected && (curFactions?.Contains(subFaction.Id) ?? false))
+                            {
+                                curPlayer.SubFactions.Remove(await _context.SubFactions.SingleAsync(y => y.Id == subFaction.Id));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var newPlayer = new Player();
+                    _context.Players.Add(newPlayer);
+
+                    newPlayer.FirstName = request.FirstName;
+                    newPlayer.LastName = request.LastName;
+
+                    newPlayer.SubFactions = await _context.SubFactions.Where(x => request.Sub_Factions.Where(y => y.Selected).Select(y => y.Id).Contains(x.Id)).ToListAsync();
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue Occured Updating Player Data! - {PlayerData}", JsonSerializer.Serialize(request));
+            }
+        }
+
         public async Task<IList<Player>> GetAllPlayers()
         {
             try
             {
                 _logger.LogInformation("Getting player data...");
 
-                var players = await _context.Players.Include(f => f.SubFactions).ToListAsync();
+                var players = await _context.Players
+                    .Include(sf => sf.SubFactions)
+                    .ThenInclude(f => f.Faction)
+                    .ThenInclude(pf => pf.Parent)
+                    .ToListAsync();
 
                 if (players == null)
                 {
@@ -63,17 +116,20 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             }
         }
 
-        public async Task<IList<Faction>> GetAllFactions()
+        public async Task<IList<SubFaction>> GetAllFactions()
         {
             try
             {
                 _logger.LogInformation("Getting faction data...");
 
-                var factions = await _context.Factions.ToListAsync();
+                var factions = await _context.SubFactions
+                    .Include(f => f.Faction)
+                    .ThenInclude(pf => pf.Parent)
+                    .ToListAsync();
 
                 if (factions == null)
                 {
-                    factions = new List<Faction>();
+                    factions = new List<SubFaction>();
                 }
 
                 _logger.LogInformation("Got faction data! {FactionsCount} factions retrieved!", factions.Count);
@@ -83,7 +139,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Issue Occured Getting Factions!");
-                return new List<Faction>();
+                return new List<SubFaction>();
             }
         }
     }

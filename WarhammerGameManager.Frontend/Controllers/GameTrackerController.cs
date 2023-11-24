@@ -20,18 +20,18 @@ namespace WarhammerGameManager.Frontend.Controllers
         }
 
         [HttpPost]
-        public IActionResult RollDice(RollDiceRequest request, long? GameId = null)
+        public async Task<IActionResult> RollDice(RollDiceRequest request, long? GameId = null)
         {
             DiceEvent data;
 
             //If there is no provided GameId, then this is a quick roll
             if (GameId == null)
             {
-                data = _gml.QuickRollDice(request);
+                data = await _gml.QuickRollDice(request);
             }
             else
             {
-                data = _gml.GameRoll(request, GameId.Value);
+                data = await _gml.GameRoll(request, GameId.Value);
             }
 
             var response = new RollDiceResponse()

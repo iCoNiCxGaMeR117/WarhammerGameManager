@@ -1,7 +1,7 @@
 ﻿$(function () {
     $('.basicDataTable').each(function () {
         $(this).DataTable({
-            
+            "paging": false,
         });
     });
 
