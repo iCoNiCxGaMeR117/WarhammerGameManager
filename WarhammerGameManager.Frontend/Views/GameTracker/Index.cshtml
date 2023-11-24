@@ -1,5 +1,7 @@
 ﻿@model GameManagerViewerViewModel
 
+<form id="OpenGameForm" asp-controller="GameTracker" asp-action="OpenGame"></form>
+
 <div class="row justify-content-center">
     <div class="col-md-6 text-center">
         <h1>Game Tracker</h1>
@@ -19,6 +21,10 @@
             </h2>
             <div id="game_@i" class="accordion-collapse collapse" aria-labelledby="cardHeading_@i" data-bs-parent="#gamesAccordian">
                 <div class="accordion-body">
+                    <div class="d-grid gap-2">
+                        <button form="OpenGameForm" name="gameId" value="@game.Id" class="btn btn-outline-primary loadButton" type="submit">Open</button>
+                    </div>
+                    <hr />
                     <div class="row justify-content-center">
                         <div class="col-md-12 text-center">
                             @foreach (var gameData in game.GamePlayData.OrderByDescending(p => p.Points))

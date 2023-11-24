@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
+using WarhammerGameManager.Frontend.Hubs;
 using WarhammerGameManager.Logic.Logical.Classes;
 using WarhammerGameManager.Logic.Logical.Interfaces;
 
@@ -21,6 +22,7 @@ try
     //    options.FallbackPolicy = options.DefaultPolicy;
     //});
     builder.Services.AddRazorPages();
+    builder.Services.AddSignalR();
 
     Log.Logger = new LoggerConfiguration()
         .WriteTo.Console()
@@ -65,6 +67,8 @@ try
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.MapHub<GameUpdateHub>("/gameUpdateHub");
 
     Log.Information("Application starting!");
 

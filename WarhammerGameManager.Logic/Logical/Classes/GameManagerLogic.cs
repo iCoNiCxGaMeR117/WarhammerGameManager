@@ -84,9 +84,84 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             }
         }
 
+        public GameResult GetGameData(long gameId)
+        {
+            try
+            {
+                var gameData = _context.GameResults
+                    .Include(gd => gd.GamePlayData)
+                    .ThenInclude(p => p.PlayerData)
+                    .Include(gd => gd.GamePlayData)
+                    .ThenInclude(f => f.PlayerFaction)
+                    .Single(x => x.Id == gameId);
+
+                return gameData;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Issue getting Game Data!");
+
+                return new();
+            }
+        }
+
+        public List<DiceEvent> GetGameDiceData(long gameId)
+        {
+            try
+            {
+                var data = _context.GameResults
+                    .Include(de => de.DiceEvents)
+                    .ThenInclude(dr => dr.Rolls)
+                    .ThenInclude(rt => rt.RollType)
+                    .Single(x => x.Id == gameId);
+
+                return data.DiceEvents.OrderByDescending(x => x.Id).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue getting dice roll data!");
+
+                return new List<DiceEvent>();
+            }
+        }
+
         public async Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId)
         {
-            throw new NotImplementedException();
+            var diceEvent = new DiceEvent();
+            _context.DiceEvents.Add(diceEvent);
+            diceEvent.GameRoll = _context.GameResults.Single(x => x.Id == GameId);
+
+            var rolls = new List<DiceRoll>();
+
+            var rollTypes = _context.RollTypes.ToList();
+
+            var hitRoll = (await RollDice(request.DiceCount))
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("HIT")), request.HitThreshold);
+            rolls.AddRange(hitRoll);
+            var hitCount = hitRoll.Count(x => x.PassResult);
+
+            var woundRoll = (await RollDice(hitCount))
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("WOUND")), request.WoundThreshold);
+            rolls.AddRange(woundRoll);
+            var woundCount = woundRoll.Count(x => x.PassResult);
+
+            var saveRoll = (await RollDice(woundCount))
+                .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("SAVE")), request.SaveThreshold);
+            rolls.AddRange(saveRoll);
+            var saveCount = saveRoll.Count(x => x.PassResult);
+
+            if (request.FeelNoPainFlag)
+            {
+                var fnpRoll = (await RollDice(woundCount - saveCount))
+                    .ConvertToDiceRoll(rollTypes.Single(x => x.Name.ToUpper().Equals("FEEL NO PAIN")), request.FeelNoPainThreshold ?? 6);
+                rolls.AddRange(fnpRoll);
+            }
+
+            diceEvent.Rolls = rolls;
+
+            await _context.SaveChangesAsync();
+
+            return diceEvent;
         }
 
         private async Task<int[]> RollDice(int diceCount)

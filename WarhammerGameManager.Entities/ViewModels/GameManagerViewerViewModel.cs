@@ -9,10 +9,10 @@ namespace WarhammerGameManager.Entities.ViewModels
 {
     public class GameManagerViewerViewModel
     {
-        public IList<GameResult> Games { get; set; }
+        public IList<GameResult> Games { get; set; } = new List<GameResult>();
 
-        public IList<Player> Players { get; set; }
+        public IList<Player> Players { get; set; } = new List<Player>();
 
-        public IList<Faction> Factions { get; set; }
+        public IList<Faction> Factions { get; set; } = new List<Faction>();
     }
 }

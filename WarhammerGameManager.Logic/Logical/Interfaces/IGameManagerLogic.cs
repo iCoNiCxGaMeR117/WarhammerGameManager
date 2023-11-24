@@ -8,6 +8,8 @@ namespace WarhammerGameManager.Logic.Logical.Interfaces
     {
         Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId);
         Task<GameManagerViewerViewModel> GenerateGameManagerView();
+        GameResult GetGameData(long gameId);
+        List<DiceEvent> GetGameDiceData(long gameId);
         Task<DiceEvent> QuickRollDice(RollDiceRequest request);
     }
 }

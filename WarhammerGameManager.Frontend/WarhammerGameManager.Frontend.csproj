@@ -23,7 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\GameTracker\Partials\RollsHistoryPartialView.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\css\site.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\GameUpdateHubScripts.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\js\PlayerEditorScripts.js">
