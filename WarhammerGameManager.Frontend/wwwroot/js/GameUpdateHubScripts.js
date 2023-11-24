@@ -18,10 +18,14 @@ connection.on("ReceiveRollsUpdates", function (receivedGameId) {
     }
 });
 
-connection.on('ReceiveUpdatedPoints', function (pointValues) {
-    $(pointValues).each(function () {
-        $('#playerData_' + this.id).val(this.points);
-    });
+connection.on('ReceiveUpdatedPoints', function (pointValues, receivedGameId) {
+    let gameId = $('#RollDiceGameId').val();
+    console.log('received signalR message');
+    if (gameId == receivedGameId) {
+        $(pointValues).each(function () {
+            $('#playerData_' + this.id).val(this.points);
+        });
+    }
 });
 
 connection.start().then(function () {

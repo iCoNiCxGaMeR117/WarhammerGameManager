@@ -31,7 +31,7 @@ namespace WarhammerGameManager.Frontend.Controllers
         public async Task<IActionResult> SavePointsUpdates(long GameId, List<GameData> GameData)
         {
             await _gml.UpdatePoints(GameData);
-            await _hubContext.Clients.All.SendAsync("ReceiveUpdatedPoints", GameData.ToArray());
+            await _hubContext.Clients.All.SendAsync("ReceiveUpdatedPoints", GameData.ToArray(), GameId);
             return RedirectToAction("OpenGame", new { gameId = GameId });
         }
 
