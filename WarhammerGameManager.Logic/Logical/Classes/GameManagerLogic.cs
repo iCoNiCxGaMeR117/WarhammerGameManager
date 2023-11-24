@@ -66,8 +66,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                     .ThenInclude(p => p.PlayerData)
                     .Include(gd => gd.GamePlayData)
                     .ThenInclude(pf => pf.PlayerFaction)
-                    .OrderByDescending(x => x.GameDate)
-                    .ThenByDescending(x => x.Id)
+                    .OrderByDescending(x => x.Id)
                     .ToListAsync();
 
                 return new GameManagerViewerViewModel
@@ -122,6 +121,54 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                 _logger.LogError(ex, "Issue getting dice roll data!");
 
                 return new List<DiceEvent>();
+            }
+        }
+
+        public async Task UpdatePoints (List<GameData> gameData)
+        {
+            try
+            {
+                foreach (var rec in gameData)
+                {
+                    var curRec = _context.GameDatas.Single(x => x.Id == rec.Id);
+                    curRec.Points = rec.Points;
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue occured trying to update points for game!");
+            }
+        }
+
+        public async Task<long> CreateNewGameHost (List<KeyValueMap> gameData)
+        {
+            try
+            {
+                var newGame = new GameResult
+                {
+                    GameDate = DateTime.Now
+                };
+                _context.GameResults.Add(newGame);
+
+                foreach (var rec in gameData.Where(x => x.Key != -1 && x.Value != -1))
+                {
+                    newGame.GamePlayData.Add(new GameData
+                    {
+                        PlayerData = _context.Players.Single(y => y.Id == rec.Key),
+                        PlayerFaction = _context.Factions.Single(y => y.Id == rec.Value),
+                        Points = 0
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
+                return newGame.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue occured creating new Game!");
+                return -1;
             }
         }
 

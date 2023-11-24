@@ -5,7 +5,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/gameUpdateHub").bu
 //Disable the send button until connection is established.
 document.getElementById("RollDiceButton").disabled = true;
 
-connection.on("ReceiveUpdates", function (receivedGameId) {
+connection.on("ReceiveRollsUpdates", function (receivedGameId) {
     let gameId = $('#RollDiceGameId').val();
     console.log('received signalR message');
     if (gameId == receivedGameId) {
@@ -16,6 +16,12 @@ connection.on("ReceiveUpdates", function (receivedGameId) {
             });
         });
     }
+});
+
+connection.on('ReceiveUpdatedPoints', function (pointValues) {
+    $(pointValues).each(function () {
+        $('#playerData_' + this.id).val(this.points);
+    });
 });
 
 connection.start().then(function () {

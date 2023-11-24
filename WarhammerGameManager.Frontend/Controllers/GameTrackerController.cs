@@ -28,10 +28,26 @@ namespace WarhammerGameManager.Frontend.Controllers
             return View(_gml.GetGameData(gameId));
         }
 
+        public async Task<IActionResult> SavePointsUpdates(long GameId, List<GameData> GameData)
+        {
+            await _gml.UpdatePoints(GameData);
+            await _hubContext.Clients.All.SendAsync("ReceiveUpdatedPoints", GameData.ToArray());
+            return RedirectToAction("OpenGame", new { gameId = GameId });
+        }
+
         [HttpGet]
         public IActionResult GetRollData (long gameId)
         {
             return PartialView("~/Views/GameTracker/Partials/RollsHistoryPartialView.cshtml", _gml.GetGameDiceData(gameId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewGame(List<KeyValueMap> gameData)
+        {
+            //Key is player id, Value is faction id
+            var newGameId = await _gml.CreateNewGameHost(gameData);
+
+            return RedirectToAction("OpenGame", new { gameId = newGameId });
         }
 
         [HttpPost]
@@ -47,7 +63,7 @@ namespace WarhammerGameManager.Frontend.Controllers
             else
             {
                 data = await _gml.GameRoll(request, GameId.Value);
-                await _hubContext.Clients.All.SendAsync("ReceiveUpdates", GameId.Value);
+                await _hubContext.Clients.All.SendAsync("ReceiveRollsUpdates", GameId.Value);
             }
 
             var response = new RollDiceResponse()

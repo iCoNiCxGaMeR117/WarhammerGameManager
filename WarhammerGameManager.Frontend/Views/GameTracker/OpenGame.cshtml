@@ -1,22 +1,32 @@
 ﻿@model GameResult
 
-<form id="RollDiceRequestForm" asp-controller="GameTracker" asp-action="RollDice" method="post">
+<form id="RollDiceRequestForm" asp-controller="GameTracker" asp-action="RollDice" method="post"></form>
+<form id="UpdatePointsForm" asp-controller="GameTracker" asp-action="SavePointsUpdates">
+    <input type="hidden" name="GameId" value="@Model.Id" />
 </form>
 
 <input type="hidden" name="GameId" id="RollDiceGameId" value="@Model.Id" />
 
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 text-center">
-        @foreach (var gameData in Model.GamePlayData.OrderBy(x => x.Id))
+        @{
+            var orderedData = Model.GamePlayData.OrderBy(x => x.Id).ToList();
+        }
+        @for (var i = 0; i < orderedData.Count; i++)
         {
+            var gameData = orderedData[i];
+
             <h3>@gameData.PlayerData.FirstName @gameData.PlayerData.LastName</h3>
             <h5>@gameData.PlayerFaction.Name</h5>
             <h4>Points:</h4>
-            <input type="number" step="1" name="playerPoints" class="form-control" id="player_@gameData.PlayerData.Id" value="@gameData.Points" />
+            <input form="UpdatePointsForm" type="hidden" name="GameData[@i].Id" value="@gameData.Id" />
+            <input form="UpdatePointsForm" type="number" step="1" name="GameData[@i].Points" class="form-control" id="playerData_@gameData.Id" value="@gameData.Points" />
             <hr />
         }
+        <button class="btn btn-outline-success" form="UpdatePointsForm" type="submit">Apply Updates</button>
     </div>
 </div>
+<hr />
 <div class="row justify-content-center">
     <div class="col-md-6 text-center">
         <div class="d-grid gap-2">
@@ -26,7 +36,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="RollDiceModal" tabindex="-1" aria-labelledby="RollDiceModal" aria-hidden="true">
+<div class="modal fade" id="RollDiceModal" tabindex="-1" aria-labelledby="RollDiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">

@@ -97,6 +97,8 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                     .Include(sf => sf.SubFactions)
                     .ThenInclude(f => f.Faction)
                     .ThenInclude(pf => pf.Parent)
+                    .OrderBy(nm => nm.LastName)
+                    .ThenBy(nml => nml.LastName)
                     .ToListAsync();
 
                 if (players == null)
@@ -124,6 +126,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                 var factions = await _context.SubFactions
                     .Include(f => f.Faction)
                     .ThenInclude(pf => pf.Parent)
+                    .OrderBy(nm => nm.Name)
                     .ToListAsync();
 
                 if (factions == null)
@@ -151,6 +154,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                 var factions = await _context.Factions
                     .Include(x => x.Parent)
                     .Include(y => y.SubFactions)
+                    .OrderBy(nm => nm.Name)
                     .ToListAsync();
 
                 if (factions == null)

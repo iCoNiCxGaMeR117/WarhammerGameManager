@@ -2,13 +2,58 @@
 
 <form id="OpenGameForm" asp-controller="GameTracker" asp-action="OpenGame"></form>
 
+<form id="CreateNewGame" asp-controller="GameTracker" asp-action="CreateNewGame" method="post"></form>
+
 <div class="row justify-content-center">
     <div class="col-md-6 text-center">
         <h1>Game Tracker</h1>
         <hr />
+        <div class="d-grid gap-2">
+            <button class="btn btn-lg btn-block btn-outline-success" data-bs-toggle="modal" data-bs-target="#AddGameModal">Add New Game</button>
+        </div>
+        <div class="modal fade" id="AddGameModal" tabindex="-1" aria-labelledby="AddGameModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddGameModalLabel">Add Game</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @for (var i = 0; i < 4; i++)
+                        {
+                            <hr />
+                            <div class="row justify-content-center">
+                                <div class="col-md-6 text-center">
+                                    <select form="CreateNewGame" class="form-select" id="playerSelect_@i" name="gameData[@i].Key">
+                                        <option value="-1" selected>Select Player</option>
+                                        @foreach(var player in Model.Players)
+                                        {
+                                            <option value="@player.Id">@player.LastName, @player.FirstName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <select form="CreateNewGame" class="form-select" id="factionSelect_@i" name="gameData[@i].Value">
+                                        <option value="-1" selected>Select Faction</option>
+                                        @foreach (var faction in Model.Factions)
+                                        {
+                                            <option value="@faction.Id">@faction.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="CreateNewGame" class="btn btn-outline-success">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+<hr />
 <div class="accordion" id="gamesAccordian">
     @for (var i = 0; i < Model.Games.Count; i++)
     {
