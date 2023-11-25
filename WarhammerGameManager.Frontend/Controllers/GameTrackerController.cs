@@ -74,5 +74,23 @@ namespace WarhammerGameManager.Frontend.Controllers
 
             return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", response);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RollDiceBasic(RollDiceBasicRequest request, long? GameId = null)
+        {
+            RollDiceBasicResponse response;
+            //If there is no provided GameId, then this is a quick roll
+            if (GameId == null)
+            {
+                response = await _gml.QuickRollDice(request);
+            }
+            else
+            {
+                response = await _gml.GameRoll(request, GameId.Value);
+                await _hubContext.Clients.All.SendAsync("ReceiveRollsUpdates", GameId.Value);
+            }
+
+            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsBasicPartialView.cshtml", response);
+        }
     }
 }

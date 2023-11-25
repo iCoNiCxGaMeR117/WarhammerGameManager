@@ -1,0 +1,51 @@
+﻿@model RollDiceBasicResponse
+
+<div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+        <h3>Results</h3>
+        <hr />
+        <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#RollsDetailsCard" aria-expanded="false" aria-controls="RollsDetailsCard">@Model.RollType.Name Rolls</button>
+        <div class="collapse" id="RollsDetailsCard">
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Roll Result
+                                </th>
+                                <th>
+                                    Passed
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var roll in Model.Results.Rolls)
+                            {
+                                <tr>
+                                    <td>
+                                        @roll.RollResult
+                                    </td>
+                                    <td>
+                                        @if (roll.PassResult)
+                                        {
+                                            <span class="badge rounded-pill bg-success">Pass</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-danger">Fail</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <b>Pass Val: @(Model.Request.Threshold)+</b>
+        <br />
+        Pass: @Model.Results.Rolls.Count(x => x.PassResult)
+    </div>
+</div>

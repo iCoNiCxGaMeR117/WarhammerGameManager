@@ -23,6 +23,35 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             _al = al;
         }
 
+        public async Task<RollDiceBasicResponse> QuickRollDice(RollDiceBasicRequest request)
+        {
+            try
+            {
+                var diceEvent = new DiceEvent();
+                var rolls = new List<DiceRoll>();
+
+                var rollType = _context.RollTypes.Single(x => x.Id == request.RollTypeId);
+
+                var diceRoll = (await RollDice(request.DiceCount))
+                    .ConvertToDiceRoll(rollType, request.Threshold);
+                rolls.AddRange(diceRoll);
+
+                diceEvent.Rolls = rolls;
+
+                return new RollDiceBasicResponse
+                {
+                    Request = request,
+                    Results = diceEvent,
+                    RollType = rollType
+                };
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex, "Issues occured trying to roll basic dice!");
+
+                return new();
+            }
+        }
+
         public async Task<DiceEvent> QuickRollDice(RollDiceRequest request)
         {
             var diceEvent = new DiceEvent();
@@ -124,6 +153,23 @@ namespace WarhammerGameManager.Logic.Logical.Classes
             }
         }
 
+        public async Task<List<RollType>> GetRollTypes()
+        {
+            try
+            {
+                var data = await _context.RollTypes
+                    .OrderBy(x => x.Name)
+                    .ToListAsync();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Issue getting roll types!");
+                return new List<RollType>();
+            }
+        }
+
         public async Task UpdatePoints (List<GameData> gameData)
         {
             try
@@ -170,6 +216,32 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                 _logger.LogError(ex, "Issue occured creating new Game!");
                 return -1;
             }
+        }
+
+        public async Task<RollDiceBasicResponse> GameRoll(RollDiceBasicRequest request, long GameId)
+        {
+            var diceEvent = new DiceEvent();
+            _context.DiceEvents.Add(diceEvent);
+            diceEvent.GameRoll = _context.GameResults.Single(x => x.Id == GameId);
+
+            var rollType = _context.RollTypes.Single(x => x.Id == request.RollTypeId);
+
+            var rolls = new List<DiceRoll>();
+
+            var diceRoll = (await RollDice(request.DiceCount))
+                    .ConvertToDiceRoll(rollType, request.Threshold);
+            rolls.AddRange(diceRoll);
+            
+            diceEvent.Rolls = rolls;
+
+            await _context.SaveChangesAsync();
+
+            return new RollDiceBasicResponse
+            {
+                Request = request,
+                Results = diceEvent,
+                RollType = rollType
+            };
         }
 
         public async Task<DiceEvent> GameRoll(RollDiceRequest request, long GameId)
