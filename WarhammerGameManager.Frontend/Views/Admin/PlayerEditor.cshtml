@@ -1,0 +1,275 @@
+﻿@model PlayerEditorViewModel
+
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <h1>Players</h1>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#newPlayerEditModal">Add New Player</button>
+            <form asp-controller="Admin" asp-action="PlayerInfoEditor" method="post">
+                <div class="modal fade" id="newPlayerEditModal" tabindex="-1" aria-labelledby="newPlayerEditModal_Label" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="newPlayerEditModal_Label">Add New Player</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <hr />
+                                <h3>Personal Information</h3>
+                                <hr />
+                                <div class="mb-3">
+                                    <label for="ExistingPlayerEditor_FirstName" class="form-label">First Name</label>
+                                    <input name="request.FirstName" type="text" class="form-control" id="ExistingPlayerEditor_FirstName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ExistingPlayerEditor_LastName" class="form-label">Last Name</label>
+                                    <input name="request.LastName" type="text" class="form-control" id="ExistingPlayerEditor_LastName">
+                                </div>
+                                <hr />
+                                <h3>Factions</h3>
+                                <hr />
+                                <div class="table-responsive text-center" style="max-height: 30vh">
+                                    <table class="table table-striped EditorFactionViewerTable">
+                                        <thead>
+                                            <tr>
+                                                <th>
+
+                                                </th>
+                                                <th class="text-center">
+                                                    Parent Faction
+                                                </th>
+                                                <th class="text-center">
+                                                    Faction
+                                                </th>
+                                                <th class="text-center">
+                                                    Sub Faction
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (var j = 0; j < Model.Sub_Factions.Count; j++)
+                                            {
+                                                var subFaction = Model.Sub_Factions[j];
+                                                <tr>
+                                                    <td>
+                                                        <input name="request.Sub_Factions[@j].Id" value="@subFaction.Id" type="hidden" />
+
+                                                        <div class="form-check form-switch">
+                                                            <input name="request.Sub_Factions[@j].Selected" value="true" class="form-check-input" type="checkbox">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @subFaction.Faction.Parent.Name
+                                                    </td>
+                                                    <td>
+                                                        @subFaction.Faction.Name
+                                                    </td>
+                                                    <td>
+                                                        @subFaction.Name
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-success loadButton">Submit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+        <hr />
+        <div class="table-responsive table-striped">
+            <table id="PlayerDescTable" class="table">
+                <thead>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th class="text-center">
+                            First Name
+                        </th>
+                        <th class="text-center">
+                            Last Name
+                        </th>
+                        <th class="text-center">
+                            Factions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Players.Count; i++)
+                    {
+                        var player = Model.Players[i];
+                        <tr>
+                            <td>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#playerEditModal_@player.Id">Edit</button>
+                                <form asp-controller="Admin" asp-action="PlayerInfoEditor" method="post">
+                                    <input name="request.ExistingPlayerId" value="@player.Id" type="hidden" />
+                                    <div class="modal fade" id="playerEditModal_@player.Id" tabindex="-1" aria-labelledby="playerEditModal_Label_@player.Id" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="playerEditModal_Label_@player.Id">@player.FirstName @(player.LastName) - Edit</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <hr />
+                                                    <h3>Personal Information</h3>
+                                                    <hr />
+                                                    <div class="mb-3">
+                                                        <label for="ExistingPlayerEditor_FirstName_@player.Id" class="form-label">First Name</label>
+                                                        <input name="request.FirstName" value="@player.FirstName" type="text" class="form-control" id="ExistingPlayerEditor_FirstName_@player.Id">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="ExistingPlayerEditor_LastName_@player.Id" class="form-label">Last Name</label>
+                                                        <input name="request.LastName" value="@player.LastName" type="text" class="form-control" id="ExistingPlayerEditor_LastName_@player.Id">
+                                                    </div>
+                                                    <hr />
+                                                    <h3>Factions</h3>
+                                                    <hr />
+                                                    <div class="table-responsive text-center" style="max-height: 30vh">
+                                                        <table class="table table-striped EditorFactionViewerTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        Parent Faction
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        Faction
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        Sub Faction
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @for (var j = 0; j < Model.Sub_Factions.Count; j++)
+                                                                {
+                                                                    var subFaction = Model.Sub_Factions[j];
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input name="request.Sub_Factions[@j].Id" value="@subFaction.Id" type="hidden" />
+                                                                            @if (player.SubFactions.Contains(subFaction))
+                                                                            {
+                                                                                <div class="form-check form-switch">
+                                                                                    <input name="request.Sub_Factions[@j].Selected" value="true" class="form-check-input" type="checkbox" checked>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div class="form-check form-switch">
+                                                                                    <input name="request.Sub_Factions[@j].Selected" value="true" class="form-check-input" type="checkbox">
+                                                                                </div>
+                                                                            }
+                                                                        </td>
+                                                                        <td>
+                                                                            @subFaction.Faction.Parent.Name
+                                                                        </td>
+                                                                        <td>
+                                                                            @subFaction.Faction.Name
+                                                                        </td>
+                                                                        <td>
+                                                                            @subFaction.Name
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-outline-success loadButton">Submit</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                @player.FirstName
+                            </td>
+                            <td>
+                                @player.LastName
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#playerFactionModal_@player.Id">Factions</button>
+                                <div class="modal fade" id="playerFactionModal_@player.Id" tabindex="-1" aria-labelledby="playerFactionModal_Label_@player.Id" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="playerFactionModal_Label_@player.Id">@player.FirstName @(player.LastName)'s - Factions</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive text-center">
+                                                    <table class="table table-striped basicDataTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">
+                                                                    Parent Faction
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Faction
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Sub Faction
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var subFaction in player.SubFactions)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @subFaction.Faction.Parent.Name
+                                                                    </td>
+                                                                    <td>
+                                                                        @subFaction.Faction.Name
+                                                                    </td>
+                                                                    <td>
+                                                                        @subFaction.Name
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/PlayerEditorScripts.js" asp-append-version="true"></script>
+}

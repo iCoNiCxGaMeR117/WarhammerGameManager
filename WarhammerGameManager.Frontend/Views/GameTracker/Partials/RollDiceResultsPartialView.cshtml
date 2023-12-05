@@ -1,0 +1,191 @@
+﻿@model RollDiceResponse
+
+<div class="row justify-content-center">
+    <div class="col-md-12 text-center">
+        <h3>Results</h3>
+        <hr />
+        <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#HitsDetailsCard" aria-expanded="false" aria-controls="HitsDetailsCard">Hit Rolls</button>
+        <div class="collapse" id="HitsDetailsCard">
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Roll Result
+                                </th>
+                                <th>
+                                    Passed
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var roll in Model.Results.Hits)
+                            {
+                                <tr>
+                                    <td>
+                                        @roll.RollResult
+                                    </td>
+                                    <td>
+                                        @if (roll.PassResult)
+                                        {
+                                            <span class="badge rounded-pill bg-success">Pass</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-danger">Fail</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <b>Pass Val: @(Model.Request.HitThreshold)+</b>
+        <br />
+        Hits: @Model.Results.Hits.Count(x => x.PassResult)
+        <hr />
+        <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#WoundsDetailsCard" aria-expanded="false" aria-controls="WoundsDetailsCard">Wound Rolls</button>
+        <div class="collapse" id="WoundsDetailsCard">
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Roll Result
+                                </th>
+                                <th>
+                                    Passed
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var roll in Model.Results.Wounds)
+                            {
+                                <tr>
+                                    <td>
+                                        @roll.RollResult
+                                    </td>
+                                    <td>
+                                        @if (roll.PassResult)
+                                        {
+                                            <span class="badge rounded-pill bg-success">Pass</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-danger">Fail</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <b>Pass Val: @(Model.Request.WoundThreshold)+</b>
+        <br />
+        Wounds: @Model.Results.Wounds.Count(x => x.PassResult)
+        <hr />
+        <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#SavesDetailsCard" aria-expanded="false" aria-controls="SavesDetailsCard">Save Rolls</button>
+        <div class="collapse" id="SavesDetailsCard">
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Roll Result
+                                </th>
+                                <th>
+                                    Passed
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var roll in Model.Results.Saves)
+                            {
+                                <tr>
+                                    <td>
+                                        @roll.RollResult
+                                    </td>
+                                    <td>
+                                        @if (roll.PassResult)
+                                        {
+                                            <span class="badge rounded-pill bg-success">Pass</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill bg-danger">Fail</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <b>Pass Val: @(Model.Request.SaveThreshold)+</b>
+        <br />
+        Saves: @Model.Results.Saves.Count(x => x.PassResult)
+        @if (Model.Request.FeelNoPainFlag)
+        {
+            <hr />
+            <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#FNPDetailsCard" aria-expanded="false" aria-controls="FNPDetailsCard">Feel No Pain Rolls</button>
+            <div class="collapse" id="FNPDetailsCard">
+                <div class="card card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Roll Result
+                                    </th>
+                                    <th>
+                                        Passed
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var roll in Model.Results.FeelNoPains)
+                                {
+                                    <tr>
+                                        <td>
+                                            @roll.RollResult
+                                        </td>
+                                        <td>
+                                            @if (roll.PassResult)
+                                            {
+                                                <span class="badge rounded-pill bg-success">Pass</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge rounded-pill bg-danger">Fail</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <b>Pass Val: @(Model.Request.FeelNoPainThreshold)+</b>
+            <br />
+            <div>Feel No Pain: @Model.Results.FeelNoPains.Count(x => x.PassResult)</div>
+        }
+        <hr />
+        <h3>Total Damaging Attacks</h3>
+        <b>Number of wounds remaining after removing saves & FNP's</b>
+        <hr />
+        <h3>@Model.Results.TotalDamagingAttacks</h3>
+    </div>
+</div>

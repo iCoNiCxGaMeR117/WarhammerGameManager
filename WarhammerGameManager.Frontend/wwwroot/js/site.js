@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(function () {
+    $('.basicDataTable').each(function () {
+        $(this).DataTable({
+            "paging": false,
+        });
+    });
 
-// Write your JavaScript code.
+    $('#LoadingIconSection').fadeOut('fast', function () {
+        $('#MainContent').fadeIn('fast');
+    });
+});
+
+$('.loadButton').on('click', function () {
+    $('#MainContent').fadeOut('fast', function () {
+        $('#LoadingIconSection').fadeIn('fast');
+    });
+});
