@@ -1,6 +1,6 @@
 ﻿@model GameResult
 
-<form id="RollDiceRequestForm" asp-controller="GameTracker" asp-action="RollDice" method="post"></form>
+<form id="RollDiceRequestForm" asp-controller="RollDice" asp-action="RollDice" method="post"></form>
 <form id="UpdatePointsForm" asp-controller="GameTracker" asp-action="SavePointsUpdates">
     <input type="hidden" name="GameId" value="@Model.Id" />
 </form>

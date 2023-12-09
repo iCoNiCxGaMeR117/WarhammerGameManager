@@ -1,8 +1,14 @@
-﻿@model List<RollType>
+﻿@model RollDiceViewModel
 
-<form id="RollDiceRequestForm" asp-controller="GameTracker" asp-action="RollDice" method="post">
+@{
+    var HitRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("HITS")).ToList();
+    var WoundRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("WOUNDS")).ToList();
+    var SaveRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("SAVES")).ToList();
+}
+
+<form id="RollDiceRequestForm" asp-controller="RollDice" asp-action="RollDice" method="post">
 </form>
-<form id="RollDiceBasicRequestForm" asp-controller="GameTracker" asp-action="RollDiceBasic" method="post">
+<form id="RollDiceBasicRequestForm" asp-controller="RollDice" asp-action="RollDiceBasic" method="post">
 </form>
 
 <div class="row justify-content-center">
@@ -39,15 +45,102 @@
                                 <input form="RollDiceRequestForm" name="request.DiceCount" type="number" step="1" min="1" class="form-control" id="AttackCountInput" aria-describedby="AttackCountHelp">
                                 <div id="AttackCountHelp" class="form-text">The number of dice to roll initially, usually the A (attacks) characteristic.</div>
                             </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#hitRules" aria-expanded="false" aria-controls="hitRules">
+                                    Hit Special Rules
+                                </button>
+                                <div class="collapse" id="hitRules">
+                                    <div class="card card-body text-start">
+                                        @if (HitRules == null || !HitRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < HitRules.Count; i++)
+                                            {
+                                                var curRule = HitRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@i].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="HitThresholdInput" class="form-label">Hit Threshold</label>
                                 <input form="RollDiceRequestForm" name="request.HitThreshold" type="number" step="1" min="1" max="6" class="form-control" id="HitThresholdInput" aria-describedby="HitThresholdHelp">
                                 <div id="HitThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Hit.</div>
                             </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#woundRules" aria-expanded="false" aria-controls="woundRules">
+                                    Wound Special Rules
+                                </button>
+                                <div class="collapse" id="woundRules">
+                                    <div class="card card-body text-start">
+                                        @if (WoundRules == null || !WoundRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < WoundRules.Count; i++)
+                                            {
+                                                var curRule = WoundRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + i)].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="WoundThresholdInput" class="form-label">Wound Threshold</label>
                                 <input form="RollDiceRequestForm" name="request.WoundThreshold" type="number" step="1" min="1" max="6" class="form-control" id="WoundThresholdInput" aria-describedby="WoundThresholdHelp">
                                 <div id="WoundThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Wound.</div>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#saveRules" aria-expanded="false" aria-controls="saveRules">
+                                    Save Special Rules
+                                </button>
+                                <div class="collapse" id="saveRules">
+                                    <div class="card card-body text-start">
+                                        @if (SaveRules == null || !SaveRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < SaveRules.Count; i++)
+                                            {
+                                                var curRule = SaveRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + (WoundRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + (WoundRules?.Count ?? 0) + i)].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="SaveThresholdInput" class="form-label">Save Threshold</label>
@@ -74,7 +167,7 @@
                             <div class="mb-3">
                                 <select form="RollDiceBasicRequestForm" class="form-select" id="BasicDiceRollType" name="request.RollTypeId">
                                     <option value="-1" selected>Select Roll Type</option>
-                                    @foreach (var rollType in Model)
+                                    @foreach (var rollType in Model.RollTypes)
                                     {
                                         <option value="@rollType.Id">@rollType.Name</option>
                                     }

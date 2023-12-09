@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WarhammerGameManager.Entities.ApplicationModels;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
@@ -7,6 +8,7 @@ using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Frontend.Controllers
 {
+    [Authorize]
     public class GameTrackerController : Controller
     {
         private readonly IGameManagerLogic _gml;
@@ -48,49 +50,6 @@ namespace WarhammerGameManager.Frontend.Controllers
             var newGameId = await _gml.CreateNewGameHost(gameData);
 
             return RedirectToAction("OpenGame", new { gameId = newGameId });
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RollDice(RollDiceRequest request, long? GameId = null)
-        {
-            DiceEvent data;
-
-            //If there is no provided GameId, then this is a quick roll
-            if (GameId == null)
-            {
-                data = await _gml.QuickRollDice(request);
-            }
-            else
-            {
-                data = await _gml.GameRoll(request, GameId.Value);
-                await _hubContext.Clients.All.SendAsync("ReceiveRollsUpdates", GameId.Value);
-            }
-
-            var response = new RollDiceResponse()
-            {
-                Request = request,
-                Results = data
-            };
-
-            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", response);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RollDiceBasic(RollDiceBasicRequest request, long? GameId = null)
-        {
-            RollDiceBasicResponse response;
-            //If there is no provided GameId, then this is a quick roll
-            if (GameId == null)
-            {
-                response = await _gml.QuickRollDice(request);
-            }
-            else
-            {
-                response = await _gml.GameRoll(request, GameId.Value);
-                await _hubContext.Clients.All.SendAsync("ReceiveRollsUpdates", GameId.Value);
-            }
-
-            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsBasicPartialView.cshtml", response);
         }
     }
 }
