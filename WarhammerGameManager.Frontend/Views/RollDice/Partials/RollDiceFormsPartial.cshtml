@@ -1,9 +1,9 @@
 ﻿@model RollDiceViewModel
 
 @{
-    var HitRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Hits")).ToList();
-    var WoundRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Wounds")).ToList();
-    var SaveRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Saves")).ToList();
+    var HitRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("HITS")).ToList();
+    var WoundRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("WOUNDS")).ToList();
+    var SaveRules = Model.GameRules.Where(x => x.AppliesTo.Name.ToUpper().Equals("SAVES")).ToList();
 }
 
 <form id="RollDiceRequestForm" asp-controller="RollDice" asp-action="RollDice" method="post">
