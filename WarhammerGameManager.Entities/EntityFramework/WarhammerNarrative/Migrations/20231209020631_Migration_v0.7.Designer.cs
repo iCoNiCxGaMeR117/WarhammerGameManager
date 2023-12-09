@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 
@@ -11,9 +12,11 @@ using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migrations
 {
     [DbContext(typeof(WarhammerNarrative_Context))]
-    partial class WarhammerNarrative_ContextModelSnapshot : ModelSnapshot
+    [Migration("20231209020631_Migration_v0.7")]
+    partial class Migration_v07
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -22,9 +22,11 @@ public partial class WarhammerNarrative_Context : DbContext
     public virtual DbSet<Faction> Factions { get; set; }
     public virtual DbSet<GameData> GameDatas { get; set; }
     public virtual DbSet<GameResult> GameResults { get; set; }
+    public virtual DbSet<GameRule> GameRules { get; set; }
     public virtual DbSet<ParentFaction> ParentFactions { get; set; }
     public virtual DbSet<Player> Players { get; set; }
     public virtual DbSet<RollType> RollTypes { get; set; }
+    public virtual DbSet<RuleAppliesTo> RuleAppliesTos { get; set; }
     public virtual DbSet<SubFaction> SubFactions { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -102,6 +104,17 @@ public partial class WarhammerNarrative_Context : DbContext
             .WithOne(p => p.GameRoll);
         });
 
+        modelBuilder.Entity<GameRule>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable($"{nameof(GameRule)}");
+
+            entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+        });
+
         modelBuilder.Entity<ParentFaction>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -145,6 +158,20 @@ public partial class WarhammerNarrative_Context : DbContext
 
             entity.HasMany(d => d.DiceRolls)
             .WithOne(p => p.RollType);
+        });
+
+        modelBuilder.Entity<RuleAppliesTo>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.ToTable($"{nameof(RuleAppliesTo)}");
+
+            entity.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+            entity.HasMany(d => d.GameRules)
+            .WithOne(p => p.AppliesTo);
         });
 
         modelBuilder.Entity<SubFaction>(entity =>

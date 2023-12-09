@@ -39,15 +39,45 @@
                                 <input form="RollDiceRequestForm" name="request.DiceCount" type="number" step="1" min="1" class="form-control" id="AttackCountInput" aria-describedby="AttackCountHelp">
                                 <div id="AttackCountHelp" class="form-text">The number of dice to roll initially, usually the A (attacks) characteristic.</div>
                             </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#hitRules" aria-expanded="false" aria-controls="hitRules">
+                                    Hit Special Rules
+                                </button>
+                                <div class="collapse" id="hitRules">
+                                    <div class="card card-body">
+                                        Work in progress.
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="HitThresholdInput" class="form-label">Hit Threshold</label>
                                 <input form="RollDiceRequestForm" name="request.HitThreshold" type="number" step="1" min="1" max="6" class="form-control" id="HitThresholdInput" aria-describedby="HitThresholdHelp">
                                 <div id="HitThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Hit.</div>
                             </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#woundRules" aria-expanded="false" aria-controls="woundRules">
+                                    Wound Special Rules
+                                </button>
+                                <div class="collapse" id="woundRules">
+                                    <div class="card card-body">
+                                        Work in progress
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="WoundThresholdInput" class="form-label">Wound Threshold</label>
                                 <input form="RollDiceRequestForm" name="request.WoundThreshold" type="number" step="1" min="1" max="6" class="form-control" id="WoundThresholdInput" aria-describedby="WoundThresholdHelp">
                                 <div id="WoundThresholdHelp" class="form-text">The minimum value required on a die to be considered a successful Wound.</div>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#saveRules" aria-expanded="false" aria-controls="saveRules">
+                                    Save Special Rules
+                                </button>
+                                <div class="collapse" id="saveRules">
+                                    <div class="card card-body">
+                                        Work in progress.
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="SaveThresholdInput" class="form-label">Save Threshold</label>
