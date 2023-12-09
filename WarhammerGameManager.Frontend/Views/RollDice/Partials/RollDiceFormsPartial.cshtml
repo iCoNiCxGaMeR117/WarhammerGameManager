@@ -1,4 +1,4 @@
-﻿@model List<RollType>
+﻿@model RollDiceViewModel
 
 <form id="RollDiceRequestForm" asp-controller="RollDice" asp-action="RollDice" method="post">
 </form>
@@ -104,7 +104,7 @@
                             <div class="mb-3">
                                 <select form="RollDiceBasicRequestForm" class="form-select" id="BasicDiceRollType" name="request.RollTypeId">
                                     <option value="-1" selected>Select Roll Type</option>
-                                    @foreach (var rollType in Model)
+                                    @foreach (var rollType in Model.RollTypes)
                                     {
                                         <option value="@rollType.Id">@rollType.Name</option>
                                     }

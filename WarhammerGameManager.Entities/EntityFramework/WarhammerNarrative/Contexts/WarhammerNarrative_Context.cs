@@ -30,7 +30,12 @@ public partial class WarhammerNarrative_Context : DbContext
     public virtual DbSet<SubFaction> SubFactions { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:WHNCon");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
