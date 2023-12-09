@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 
@@ -11,9 +12,11 @@ using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migrations
 {
     [DbContext(typeof(WarhammerNarrative_Context))]
-    partial class WarhammerNarrative_ContextModelSnapshot : ModelSnapshot
+    [Migration("20231209141704_Migration_v0.10")]
+    partial class Migration_v010
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +182,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
                         .HasColumnType("bigint");
 
                     b.Property<bool>("ApplyFirst")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ApplyLast")
                         .HasColumnType("bit");
 
                     b.Property<string>("Description")

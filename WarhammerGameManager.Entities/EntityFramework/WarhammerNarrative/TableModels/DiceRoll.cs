@@ -14,6 +14,12 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
 
         public bool PassResult { get; set; }
 
+        public int Threshold { get; set; }
+
+        public bool Critical { get; set; }
+
+        public bool IgnoreNextRoll { get; set; }
+
         public DiceRoll? FirstResult { get; set; }
 
         public DiceEvent Event { get; set; }

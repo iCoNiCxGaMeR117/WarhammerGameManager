@@ -11,6 +11,8 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Table
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool ApplyFirst { get; set; }
+        public bool ApplyLast { get; set; }
 
         public RuleAppliesTo AppliesTo { get; set; }
     }

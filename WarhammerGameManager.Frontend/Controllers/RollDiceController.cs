@@ -46,7 +46,7 @@ namespace WarhammerGameManager.Frontend.Controllers
                 Results = data
             };
 
-            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsPartialView.cshtml", response);
+            return PartialView("~/Views/RollDice/Partials/RollDiceResultsPartialView.cshtml", response);
         }
 
         [HttpPost]
@@ -64,7 +64,7 @@ namespace WarhammerGameManager.Frontend.Controllers
                 await _hubContext.Clients.All.SendAsync("ReceiveRollsUpdates", GameId.Value);
             }
 
-            return PartialView("~/Views/GameTracker/Partials/RollDiceResultsBasicPartialView.cshtml", response);
+            return PartialView("~/Views/RollDice/Partials/RollDiceResultsBasicPartialView.cshtml", response);
         }
     }
 }

@@ -100,7 +100,7 @@
                                                 }
                                                 <div class="form-check form-switch">
                                                     <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
-                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + i)].Selected" value="true">
                                                     <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
                                                 </div>
                                             }
@@ -134,7 +134,7 @@
                                                 }
                                                 <div class="form-check form-switch">
                                                     <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + (WoundRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
-                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + (WoundRules?.Count ?? 0) + i)].Selected" value="true">
                                                     <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
                                                 </div>
                                             }

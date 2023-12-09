@@ -44,15 +44,22 @@ namespace WarhammerGameManager.Logic
 
             foreach (var roll in rolls) 
             {
-                diceRolls.Add(new DiceRoll
-                {
-                    RollResult = roll,
-                    RollType = rollType,
-                    PassResult = (roll >= threshold)
-                });
+                diceRolls.Add(roll.ConvertToDiceRoll(rollType, threshold));
             }
 
             return diceRolls;
+        }
+
+        public static DiceRoll ConvertToDiceRoll(this int roll, RollType rollType, int threshold)
+        {
+            return new DiceRoll
+            {
+                RollResult = roll,
+                RollType = rollType,
+                Threshold = threshold,
+                PassResult = (roll >= threshold),
+                Critical = roll == 6
+            };
         }
     }
 }
