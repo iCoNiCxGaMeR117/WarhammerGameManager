@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WarhammerGameManager.Entities.ApplicationModels;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels;
@@ -7,6 +8,7 @@ using WarhammerGameManager.Logic.Logical.Interfaces;
 
 namespace WarhammerGameManager.Frontend.Controllers
 {
+    [Authorize]
     public class GameTrackerController : Controller
     {
         private readonly IGameManagerLogic _gml;

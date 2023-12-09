@@ -3,13 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using TestingIdentityProviders.Data;
+using WarhammerGameManager.Entities.EntityFramework.IdentityHub.Contexts;
 
-namespace TestingIdentityProviders.Data.Migrations
+namespace WarhammerGameManager.Entities.EntityFramework.IdentityHub.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IdentityHub_Context))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
