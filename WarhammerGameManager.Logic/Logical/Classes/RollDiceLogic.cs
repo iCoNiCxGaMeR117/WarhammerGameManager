@@ -195,7 +195,10 @@ namespace WarhammerGameManager.Logic.Logical.Classes
 
             foreach (var roll in rolls.Where(x => x.FirstResult != null))
             {
-                modList.Add(roll.FirstResult);
+                if (roll.FirstResult != null)
+                {
+                    modList.Add(roll.FirstResult);
+                }
             }
 
             diceEvent.Rolls = modList;

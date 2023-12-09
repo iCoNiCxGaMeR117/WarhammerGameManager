@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using WarhammerGameManager.Entities.EntityFramework.IdentityHub.Contexts;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 using WarhammerGameManager.Frontend.Hubs;
 using WarhammerGameManager.Logic.Logical.Classes;
 using WarhammerGameManager.Logic.Logical.Interfaces;
 
-//https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0&tabs=visual-studio
-//TODO: Integrate auth into application for account management and security.
 //TODO: Get an SSL cert for secure transmission
-
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +47,7 @@ try
 
     //Add class injections
     builder.Services.AddDbContext<WarhammerNarrative_Context>(o => o.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+    builder.Services.AddDbContext<IdentityHub_Context>(options => options.UseSqlServer("Name=ConnectionStrings:AuthCon"));
     builder.Services.AddScoped<IAdminLogic, AdminLogic>();
     builder.Services.AddScoped<IGameManagerLogic, GameManagerLogic>();
     builder.Services.AddScoped<IRollDiceLogic, RollDiceLogic>();
