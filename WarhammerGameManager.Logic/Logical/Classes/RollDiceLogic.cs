@@ -251,6 +251,7 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                             }
                             break;
                         case "REROLL FAILS":
+                        case "TWIN-LINKED":
                             foreach (var roll in rolls)
                             {
                                 if (roll.RollResult < roll.Threshold)
@@ -331,6 +332,20 @@ namespace WarhammerGameManager.Logic.Logical.Classes
                         foreach (var roll in modifiedRollList.Where(x => x.Critical))
                         {
                             roll.IgnoreNextRoll = true;
+                        }
+                        break;
+                    case "SUSTAINED 1":
+                        var critsSus1 = modifiedRollList.Where(x => x.Critical).ToList();
+                        if (critsSus1 != null && critsSus1.Count > 0)
+                        {
+                            modifiedRollList.AddRange(AddAutoRolls(critsSus1.Count, true, critsSus1.First().RollType));
+                        }
+                        break;
+                    case "SUSTAINED 2":
+                        var critsSus2 = modifiedRollList.Where(x => x.Critical).ToList();
+                        if (critsSus2 != null && critsSus2.Count > 0)
+                        {
+                            modifiedRollList.AddRange(AddAutoRolls(critsSus2.Count * 2, true, critsSus2.First().RollType));
                         }
                         break;
                     default:
