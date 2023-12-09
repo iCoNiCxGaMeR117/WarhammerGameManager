@@ -1,5 +1,11 @@
 ﻿@model RollDiceViewModel
 
+@{
+    var HitRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Hits")).ToList();
+    var WoundRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Wounds")).ToList();
+    var SaveRules = Model.GameRules.Where(x => x.AppliesTo.Name.Equals("Saves")).ToList();
+}
+
 <form id="RollDiceRequestForm" asp-controller="RollDice" asp-action="RollDice" method="post">
 </form>
 <form id="RollDiceBasicRequestForm" asp-controller="RollDice" asp-action="RollDiceBasic" method="post">
@@ -44,8 +50,27 @@
                                     Hit Special Rules
                                 </button>
                                 <div class="collapse" id="hitRules">
-                                    <div class="card card-body">
-                                        Work in progress.
+                                    <div class="card card-body text-start">
+                                        @if (HitRules == null || !HitRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < HitRules.Count; i++)
+                                            {
+                                                var curRule = HitRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@i].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -59,8 +84,27 @@
                                     Wound Special Rules
                                 </button>
                                 <div class="collapse" id="woundRules">
-                                    <div class="card card-body">
-                                        Work in progress
+                                    <div class="card card-body text-start">
+                                        @if (WoundRules == null || !WoundRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < WoundRules.Count; i++)
+                                            {
+                                                var curRule = WoundRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -74,8 +118,27 @@
                                     Save Special Rules
                                 </button>
                                 <div class="collapse" id="saveRules">
-                                    <div class="card card-body">
-                                        Work in progress.
+                                    <div class="card card-body text-start">
+                                        @if (SaveRules == null || !SaveRules.Any())
+                                        {
+                                            <h3>No rules to display!</h3>
+                                        }
+                                        else
+                                        {
+                                            @for (var i = 0; i < SaveRules.Count; i++)
+                                            {
+                                                var curRule = SaveRules[i];
+                                                if (i > 0)
+                                                {
+                                                    <hr />
+                                                }
+                                                <div class="form-check form-switch">
+                                                    <input type="hidden" form="RollDiceRequestForm" name="request.AppliedRules[@((HitRules?.Count ?? 0) + (WoundRules?.Count ?? 0) + i)].Id" value="@curRule.Id" />
+                                                    <input class="form-check-input" type="checkbox" id="@curRule.Id" form="RollDiceRequestForm" name="request.AppliedRules[@i].Selected" value="true">
+                                                    <label class="form-check-label" for="@curRule.Id"><b>@curRule.Name</b><br />@curRule.Description</label>
+                                                </div>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
