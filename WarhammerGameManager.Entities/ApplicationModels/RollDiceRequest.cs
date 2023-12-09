@@ -19,5 +19,7 @@ namespace WarhammerGameManager.Entities.ApplicationModels
         public bool FeelNoPainFlag { get; set; }
 
         public int? FeelNoPainThreshold { get; set; } = null;
+
+        public CheckboxModel[] AppliedRules { get; set; } = [];
     }
 }

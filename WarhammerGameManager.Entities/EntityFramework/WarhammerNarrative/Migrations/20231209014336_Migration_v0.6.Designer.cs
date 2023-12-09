@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 
@@ -11,9 +12,11 @@ using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migrations
 {
     [DbContext(typeof(WarhammerNarrative_Context))]
-    partial class WarhammerNarrative_ContextModelSnapshot : ModelSnapshot
+    [Migration("20231209014336_Migration_v0.6")]
+    partial class Migration_v06
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,17 +66,11 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<bool>("Critical")
-                        .HasColumnType("bit");
-
                     b.Property<long>("EventId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("FirstResultId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IgnoreNextRoll")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("PassResult")
                         .HasColumnType("bit");
@@ -83,9 +80,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
 
                     b.Property<long>("RollTypeId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("Threshold")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -167,38 +161,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
                     b.ToTable("GameResult", (string)null);
                 });
 
-            modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.GameRule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AppliesToId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("ApplyFirst")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ApplyLast")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppliesToId");
-
-                    b.ToTable("GameRule", (string)null);
-                });
-
             modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.ParentFaction", b =>
                 {
                     b.Property<long>("Id")
@@ -252,27 +214,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
                     b.HasKey("Id");
 
                     b.ToTable("RollType", (string)null);
-                });
-
-            modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.RuleAppliesTo", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RuleAppliesTo", (string)null);
                 });
 
             modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.SubFaction", b =>
@@ -386,17 +327,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
                     b.Navigation("PlayerFaction");
                 });
 
-            modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.GameRule", b =>
-                {
-                    b.HasOne("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.RuleAppliesTo", "AppliesTo")
-                        .WithMany("GameRules")
-                        .HasForeignKey("AppliesToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppliesTo");
-                });
-
             modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.SubFaction", b =>
                 {
                     b.HasOne("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.Faction", "Faction")
@@ -440,11 +370,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
             modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.RollType", b =>
                 {
                     b.Navigation("DiceRolls");
-                });
-
-            modelBuilder.Entity("WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.TableModels.RuleAppliesTo", b =>
-                {
-                    b.Navigation("GameRules");
                 });
 #pragma warning restore 612, 618
         }

@@ -51,6 +51,7 @@ try
     builder.Services.AddDbContext<WarhammerNarrative_Context>(o => o.UseSqlServer("Name=ConnectionStrings:WHNCon", s => s.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
     builder.Services.AddScoped<IAdminLogic, AdminLogic>();
     builder.Services.AddScoped<IGameManagerLogic, GameManagerLogic>();
+    builder.Services.AddScoped<IRollDiceLogic, RollDiceLogic>();
     builder.Services.AddSingleton<Random>();
 
     var app = builder.Build();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 
@@ -11,9 +12,11 @@ using WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Contexts;
 namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migrations
 {
     [DbContext(typeof(WarhammerNarrative_Context))]
-    partial class WarhammerNarrative_ContextModelSnapshot : ModelSnapshot
+    [Migration("20231209123726_Migration_v0.8")]
+    partial class Migration_v08
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,17 +66,11 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<bool>("Critical")
-                        .HasColumnType("bit");
-
                     b.Property<long>("EventId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("FirstResultId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IgnoreNextRoll")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("PassResult")
                         .HasColumnType("bit");
@@ -177,12 +174,6 @@ namespace WarhammerGameManager.Entities.EntityFramework.WarhammerNarrative.Migra
 
                     b.Property<long>("AppliesToId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("ApplyFirst")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ApplyLast")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Description")
                         .IsRequired()

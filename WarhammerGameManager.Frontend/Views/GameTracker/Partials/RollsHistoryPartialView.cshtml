@@ -20,154 +20,25 @@
                                     <h3>Hits</h3>
                                     <h5>@diceEvent.Hits.Count(x => x.PassResult)</h5>
                                     <hr />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Roll Result
-                                                    </th>
-                                                    <th>
-                                                        Passed
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var roll in diceEvent.Hits)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @roll.RollResult
-                                                        </td>
-                                                        <td>
-                                                            @if (roll.PassResult)
-                                                            {
-                                                                <span class="badge rounded-pill bg-success">Pass</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge rounded-pill bg-danger">Fail</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <partial name="~/Views/RollDice/Partials/MiniPartials/RollDiceResultsCardBodyMiniPartial.cshtml" model="@diceEvent.Hits" />
                                     <hr />
                                     <h3>Wounds</h3>
                                     <h5>@diceEvent.Wounds.Count(x => x.PassResult)</h5>
                                     <hr />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Roll Result
-                                                    </th>
-                                                    <th>
-                                                        Passed
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var roll in diceEvent.Wounds)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @roll.RollResult
-                                                        </td>
-                                                        <td>
-                                                            @if (roll.PassResult)
-                                                            {
-                                                                <span class="badge rounded-pill bg-success">Pass</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge rounded-pill bg-danger">Fail</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <partial name="~/Views/RollDice/Partials/MiniPartials/RollDiceResultsCardBodyMiniPartial.cshtml" model="@diceEvent.Wounds" />
                                     <hr />
                                     <h3>Saves</h3>
                                     <h5>@diceEvent.Saves.Count(x => x.PassResult)</h5>
                                     <hr />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Roll Result
-                                                    </th>
-                                                    <th>
-                                                        Passed
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var roll in diceEvent.Saves)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @roll.RollResult
-                                                        </td>
-                                                        <td>
-                                                            @if (roll.PassResult)
-                                                            {
-                                                                <span class="badge rounded-pill bg-success">Pass</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge rounded-pill bg-danger">Fail</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <hr />
-                                    <h3>Feel No Pain</h3>
-                                    <h5>@diceEvent.FeelNoPains.Count(x => x.PassResult)</h5>
-                                    <hr />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Roll Result
-                                                    </th>
-                                                    <th>
-                                                        Passed
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var roll in diceEvent.FeelNoPains)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @roll.RollResult
-                                                        </td>
-                                                        <td>
-                                                            @if (roll.PassResult)
-                                                            {
-                                                                <span class="badge rounded-pill bg-success">Pass</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge rounded-pill bg-danger">Fail</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <partial name="~/Views/RollDice/Partials/MiniPartials/RollDiceResultsCardBodyMiniPartial.cshtml" model="@diceEvent.Saves" />
+                                    @if (diceEvent.FeelNoPains != null && diceEvent.FeelNoPains.Any())
+                                    {
+                                        <hr />
+                                        <h3>Feel No Pain</h3>
+                                        <h5>@diceEvent.FeelNoPains.Count(x => x.PassResult)</h5>
+                                        <hr />
+                                        <partial name="~/Views/RollDice/Partials/MiniPartials/RollDiceResultsCardBodyMiniPartial.cshtml" model="@diceEvent.FeelNoPains" />
+                                    }
                                 </div>
                             </div>
                         </div>
